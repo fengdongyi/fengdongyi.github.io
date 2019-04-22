@@ -10,10 +10,16 @@
              "@type": "WebPage",
              "@id": "/"
         },
-        "articleSection" : "",
-        "name" : "Nereus",
-        "headline" : "Nereus",
-        "description" : "",
+        "articleSection" : "post",
+        "name" : "使用Docker部署Spring Cloud",
+        "headline" : "使用Docker部署Spring Cloud",
+        "description" : "内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
+ discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+启动类DiscoveryApplication
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication.",
         "inLanguage" : "en",
         "author" : "",
         "creator" : "",
@@ -23,14 +29,14 @@
         "copyrightYear" : "2019",
         "datePublished": "2019-04-20 12:41:46 &#43;0800 CST",
         "dateModified" : "2019-04-20 12:41:46 &#43;0800 CST",
-        "url" : "/",
-        "wordCount" : "0",
-        "keywords" : [ "Blog" ]
+        "url" : "/post/dockerize-spring-cloud/",
+        "wordCount" : "217",
+        "keywords" : [ "spring cloud","docker","Blog" ]
     }
     </script>
         
             
-                <title>Nereus</title>
+                <title>使用Docker部署Spring Cloud</title>
             
         
 
@@ -48,24 +54,50 @@
         
 
         <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Nereus"/>
-<meta name="twitter:description" content="Java, Developer"/>
+<meta name="twitter:title" content="使用Docker部署Spring Cloud"/>
+<meta name="twitter:description" content="内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
+ discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+启动类DiscoveryApplication
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication."/>
 
-        <meta property="og:title" content="Nereus" />
-<meta property="og:description" content="Java, Developer" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/" />
-
-<meta property="og:updated_time" content="2019-04-20T12:41:46&#43;08:00"/>
+        <meta property="og:title" content="使用Docker部署Spring Cloud" />
+<meta property="og:description" content="内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
+ discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+启动类DiscoveryApplication
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/dockerize-spring-cloud/" />
+<meta property="article:published_time" content="2019-04-20T12:41:46&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-20T12:41:46&#43;08:00"/>
 
         <meta property="og:image" content="//images/logo.png">
         <meta property="og:image:type" content="image/png">
         <meta property="og:image:width" content="512">
         <meta property="og:image:height" content="512">
         
-<meta itemprop="name" content="Nereus">
-<meta itemprop="description" content="Java, Developer">
+<meta itemprop="name" content="使用Docker部署Spring Cloud">
+<meta itemprop="description" content="内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
+ discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+启动类DiscoveryApplication
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication.">
 
+
+<meta itemprop="datePublished" content="2019-04-20T12:41:46&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-20T12:41:46&#43;08:00" />
+<meta itemprop="wordCount" content="217">
+
+
+
+<meta itemprop="keywords" content="spring cloud,docker," />
 
         
 
@@ -263,14 +295,109 @@
         
 </section>
 
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+
+<li>
+  <a href="//twitter.com/share?url=%2fpost%2fdockerize-spring-cloud%2f&amp;text=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud&amp;via=" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+    </a>
+</li>
+
+
+
+
+<li>
+  <a href="//plus.google.com/share?url=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+  </a>
+</li>
+
+
+
+
+
+<li>
+  <a href="//www.facebook.com/sharer/sharer.php?u=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+    </a>
+</li>
+
+
+
+
+<li>
+  <a href="//reddit.com/submit?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+  </a>
+</li>
+
+
+
+
+<li>
+  <a href="//www.linkedin.com/shareArticle?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn linkedin">
+      <i class="fa fa-linkedin"></i>
+      <p>LinkedIn</p>
+    </a>
+</li>
+
+
+
+
+<li>
+  <a href="//www.stumbleupon.com/submit?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+  </a>
+</li>
+
+
+
+
+<li>
+  <a href="//www.pinterest.com/pin/create/button/?url=%2fpost%2fdockerize-spring-cloud%2f&amp;description=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn pinterest">
+    <i class="fa fa-pinterest-p"></i>
+    <p>Pinterest</p>
+  </a>
+</li>
+
+
+
+
+<li>
+  <a href="mailto:?subject=Check out this post by &amp;body=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+  </a>
+</li>
+
+
+        </ul>
+    </section>
+</section>
+
     
     <div id="main">
         
-            <article class="post">
+        
+        <article class="post">
   <header>
     <div class="title">
         
-            <h2><a href="/post/dockerize-spring-cloud/">使用Docker部署Spring Cloud</a></h2>
+            <h1><a href="/post/dockerize-spring-cloud/">使用Docker部署Spring Cloud</a></h1>
+            
         
         
     </div>
@@ -634,101 +761,6 @@ ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]
 </ul>
 
 
-
-            <section id="share-menu">
-    <section id="social-share-nav">
-        <ul class="links">
-            <header>
-                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
-            </header>
-            
-
-
-
-<li>
-  <a href="//twitter.com/share?url=%2fpost%2fdockerize-spring-cloud%2f&amp;text=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud&amp;via=" target="_blank" class="share-btn twitter">
-    <i class="fa fa-twitter"></i>
-    <p>Twitter</p>
-    </a>
-</li>
-
-
-
-
-<li>
-  <a href="//plus.google.com/share?url=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn google-plus">
-    <i class="fa fa-google-plus"></i>
-    <p>Google+</p>
-  </a>
-</li>
-
-
-
-
-
-<li>
-  <a href="//www.facebook.com/sharer/sharer.php?u=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn facebook">
-    <i class="fa fa-facebook"></i>
-    <p>Facebook</p>
-    </a>
-</li>
-
-
-
-
-<li>
-  <a href="//reddit.com/submit?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn reddit">
-    <i class="fa fa-reddit-alien"></i>
-    <p>Reddit</p>
-  </a>
-</li>
-
-
-
-
-<li>
-  <a href="//www.linkedin.com/shareArticle?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn linkedin">
-      <i class="fa fa-linkedin"></i>
-      <p>LinkedIn</p>
-    </a>
-</li>
-
-
-
-
-<li>
-  <a href="//www.stumbleupon.com/submit?url=%2fpost%2fdockerize-spring-cloud%2f&amp;title=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn stumbleupon">
-    <i class="fa fa-stumbleupon"></i>
-    <p>StumbleUpon</p>
-  </a>
-</li>
-
-
-
-
-<li>
-  <a href="//www.pinterest.com/pin/create/button/?url=%2fpost%2fdockerize-spring-cloud%2f&amp;description=%e4%bd%bf%e7%94%a8Docker%e9%83%a8%e7%bd%b2Spring%20Cloud" target="_blank" class="share-btn pinterest">
-    <i class="fa fa-pinterest-p"></i>
-    <p>Pinterest</p>
-  </a>
-</li>
-
-
-
-
-<li>
-  <a href="mailto:?subject=Check out this post by &amp;body=%2fpost%2fdockerize-spring-cloud%2f" target="_blank" class="share-btn email">
-    <i class="fa fa-envelope"></i>
-    <p>Email</p>
-  </a>
-</li>
-
-
-        </ul>
-    </section>
-</section>
-
-        
     </div>
     
 <section id="sidebar">

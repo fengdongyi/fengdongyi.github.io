@@ -6,10 +6,25 @@
     <description>Recent content on Nereus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Apr 2019 16:26:25 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 20 Apr 2019 12:41:46 +0800</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用Docker部署Spring Cloud</title>
+      <link>/post/dockerize-spring-cloud/</link>
+      <pubDate>Sat, 20 Apr 2019 12:41:46 +0800</pubDate>
+      
+      <guid>/post/dockerize-spring-cloud/</guid>
+      <description>内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
+ discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+启动类DiscoveryApplication
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication.</description>
+    </item>
     
     <item>
       <title>新站点</title>
