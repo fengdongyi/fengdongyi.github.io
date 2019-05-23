@@ -1,82 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Nereus</title>
-    <link>/</link>
-    <description>Recent content on Nereus</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 19 May 2019 16:28:09 +0800</lastBuildDate>
-    
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Spring Boot 2 启动流程解析</title>
-      <link>/post/2019/how-spring-boot-2-started-up/</link>
-      <pubDate>Sun, 19 May 2019 16:28:09 +0800</pubDate>
-      
-      <guid>/post/2019/how-spring-boot-2-started-up/</guid>
-      <description>本文基于Spring Boot 2.1.4.RELEASE版本，希望通过&amp;rdquo;自顶向下&amp;rdquo;的方法来理解Spring Boot的启动流程。先从整体上了解流程走向，再查看对应源码。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>NereusYi</title><link>https://g.nereusyi.com/</link><description>Recent content on NereusYi</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 19 May 2019 16:28:09 +0800</lastBuildDate><atom:link href="https://g.nereusyi.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring Boot 2 启动流程解析</title><link>https://g.nereusyi.com/post/2019/how-spring-boot-2-started-up/</link><pubDate>Sun, 19 May 2019 16:28:09 +0800</pubDate><guid>https://g.nereusyi.com/post/2019/how-spring-boot-2-started-up/</guid><description>本文基于Spring Boot 2.1.4.RELEASE版本，希望通过&amp;rdquo;自顶向下&amp;rdquo;的方法来理解Spring Boot的启动流程。先从整体上了解流程走向，再查看对应源码。
 启动类 Spring Boot的启动类通常如下：
-@SpringBootApplication public class Application { public static void main(String[] args) { SpringApplication.run(Application.class, args); } }  首先看一下@SpringBootApplication注解，这个注解由3个注解组成 @SpringBootApplication=@EnableAutoConfiguration+@ComponentScan+@Configuration
- 注意： @SpringBootApplication实际上注册的是@SpringBootConfiguration，但@SpringBootConfiguration里面包含了@Configuration。
- 各个注解作用如下：
- @EnableAutoConfiguration 开启自动配置 @ComponentScan SpringBean扫描 @Configuration 开启配置类  然后再看一下SpringApplication类，这个类主要通过如下步骤启动应用： - 根据应用的classpath创建对应的ApplicationContext(独立应用、WEB应用或REACTIVE应用) - 注册CommandLinePropertySource，把命令行参数转换为Spring Properties - 刷新ApplicationContext，加载所有的单例SpringBean - 调用实现了CommandLineRunner的SpringBean中的run方法
+@SpringBootApplication public class Application { public static void main(String[] args) { SpringApplication.run(Application.class, args); } } 首先看一下@SpringBootApplication注解，这个注解由3个注解组成 @SpringBootApplication=@EnableAutoConfiguration+@ComponentScan+@Configuration
+注意： @SpringBootApplication实际上注册的是@SpringBootConfiguration，但@SpringBootConfiguration里面包含了@Configuration。
+各个注解作用如下：
+@EnableAutoConfiguration 开启自动配置 @ComponentScan SpringBean扫描 @Configuration 开启配置类 然后再看一下SpringApplication类，这个类主要通过如下步骤启动应用： - 根据应用的classpath创建对应的ApplicationContext(独立应用、WEB应用或REACTIVE应用) - 注册CommandLinePropertySource，把命令行参数转换为Spring Properties - 刷新ApplicationContext，加载所有的单例SpringBean - 调用实现了CommandLineRunner的SpringBean中的run方法
 下面从源码上分别来看下这些步骤，这些步骤主要在SpringApplication类中的run方法中(public ConfigurableApplicationContext run(String... args))
 主要源码如下
 代码清单1，创建SpringApplication实例
-public SpringApplication(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources) { this.resourceLoader = resourceLoader; Assert.notNull(primarySources, &amp;quot;PrimarySources must not be null&amp;quot;); this.</description>
-    </item>
-    
-    <item>
-      <title>Docker基础总结</title>
-      <link>/post/2019/docker-basic/</link>
-      <pubDate>Sun, 28 Apr 2019 22:28:09 +0800</pubDate>
-      
-      <guid>/post/2019/docker-basic/</guid>
-      <description>对开发者来说，了解一些Docker基础用法和原理有不少好处，比如在开发机上使用Docker，解决“我的机子上运行没问题”这样的情况，技术选型等。下面总结了一些常用概念和命令，其中还包含一些个人的理解，随着越来越深入的使用，本文也会持续更新。
+public SpringApplication(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources) { this.resourceLoader = resourceLoader; Assert.notNull(primarySources, &amp;quot;PrimarySources must not be null&amp;quot;); this.</description></item><item><title>Docker基础总结</title><link>https://g.nereusyi.com/post/2019/docker-basic/</link><pubDate>Sun, 28 Apr 2019 22:28:09 +0800</pubDate><guid>https://g.nereusyi.com/post/2019/docker-basic/</guid><description>对开发者来说，了解一些Docker基础用法和原理有不少好处，比如在开发机上使用Docker，解决“我的机子上运行没问题”这样的情况，技术选型等。下面总结了一些常用概念和命令，其中还包含一些个人的理解，随着越来越深入的使用，本文也会持续更新。
 Docker概况 Docker是什么 Docker是一个操作系统级的虚拟化容器平台，用Go语言实现。Docker主要用于部署和运行应用，并包含应用的所有依赖。通过Docker，可以在一台主机上隔离多个应用，以及确保应用能在不同环境下以相同方式运行。
 Docker目前有两种版本
- Community Edition (CE) Enterprise Edition (EE)  Docker引擎(Docker Engine) Docker引擎是Docker的主要核心，采用C/S结构，包含以下组件
- docker daemon
+Community Edition (CE) Enterprise Edition (EE) Docker引擎(Docker Engine) Docker引擎是Docker的主要核心，采用C/S结构，包含以下组件
+docker daemon
 docker daemon是一个在后台运行的服务，用于创建和管理docker组件，比如：镜像、容器、网络和数据卷 docker REST API
 docker REST API用来控制docker daemon docker CLI
-docker CLI是命令行工具(平常用的docker命令)，docker CLI是通过docker REST API、脚本或直接通过docker daemon命令来控制docker daemon  Docker组件 Docker主要组件有
- 镜像(image) 容器(container) 网络(network) 存储(storage)  镜像 镜像是构建容器的模版。一个镜像包含应用和应用运行所需要的所有依赖。可以通过registry存储和分发，registry是一个类似maven仓库的服务。
+docker CLI是命令行工具(平常用的docker命令)，docker CLI是通过docker REST API、脚本或直接通过docker daemon命令来控制docker daemon Docker组件 Docker主要组件有
+镜像(image) 容器(container) 网络(network) 存储(storage) 镜像 镜像是构建容器的模版。一个镜像包含应用和应用运行所需要的所有依赖。可以通过registry存储和分发，registry是一个类似maven仓库的服务。
 容器 容器是镜像的一个运行实例。可以从一个镜像中创建多个容器。如果删除一个容器，那么容器内的数据也会被删除。
 可以把Docker镜像想象成虚拟机的快照，而容器就是通过快照创建的虚拟机。
 也可以把镜像想象成Java中的类，而容器就是类的实例对象。
 网络 Docker安装之后默认有三种网络:none,bridge和host。
-存储 默认情况下，当容器被删除的时候，容器里的数据也会跟着容器被删除，同时想要转移容器内的数据也不容易。Docker有以下几种持久化存储的选择 - 数据卷(Data Volumes) - 数据卷容器(Data Volume Container) - 直接挂载主机目录(Directory Mounts) - 存储插件(Storage Plugins)</description>
-    </item>
-    
-    <item>
-      <title>使用Docker部署Spring Cloud</title>
-      <link>/post/dockerize-spring-cloud/</link>
-      <pubDate>Sat, 20 Apr 2019 12:41:46 +0800</pubDate>
-      
-      <guid>/post/dockerize-spring-cloud/</guid>
-      <description>内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
-环境  Java 8 CentOS 7.2  Spring Cloud 组件 Spring Cloud分为3个工程：
- discovery service1 service2  discovery 这个工程主要用于服务注册，相关文件代码如下：
+存储 默认情况下，当容器被删除的时候，容器里的数据也会跟着容器被删除，同时想要转移容器内的数据也不容易。Docker有以下几种持久化存储的选择 - 数据卷(Data Volumes) - 数据卷容器(Data Volume Container) - 直接挂载主机目录(Directory Mounts) - 存储插件(Storage Plugins)</description></item><item><title>使用Docker部署Spring Cloud</title><link>https://g.nereusyi.com/post/dockerize-spring-cloud/</link><pubDate>Sat, 20 Apr 2019 12:41:46 +0800</pubDate><guid>https://g.nereusyi.com/post/dockerize-spring-cloud/</guid><description>内容简介 这篇文章主要介绍如何使用Docker来部署一套基本的Spring Cloud环境，包含服务发现和服务调用，主要是展示Spring Cloud 和Docker是如何配合使用的。Docker和Spring Cloud都是使用基础组件。
+环境 Java 8 CentOS 7.2 Spring Cloud 组件 Spring Cloud分为3个工程：
+discovery service1 service2 discovery 这个工程主要用于服务注册，相关文件代码如下：
 启动类DiscoveryApplication
-@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } }  配置文件application.yml
-spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false  service1 启动类Service1Application
-@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication.</description>
-    </item>
-    
-    <item>
-      <title>新站点</title>
-      <link>/post/new-website/</link>
-      <pubDate>Sun, 14 Apr 2019 16:26:25 +0800</pubDate>
-      
-      <guid>/post/new-website/</guid>
-      <description>本站点采用HUGO生成。在这之前用过不少博客平台，记得最开始开通博客大概在高中，那时候用的是百度空间，文笔不算好，所以博文都还是转载的多，也在上面认识了不少人。之后过了不久，百度空间被关闭了。
+@EnableEurekaServer @SpringBootApplication public class DiscoveryApplication { public static void main(String[] args) { SpringApplication.run(DiscoveryApplication.class, args); } } 配置文件application.yml
+spring: application: name: discovery eureka: client: service-url: defaultZone: http://discovery:8080/eureka/ register-with-eureka: false fetch-registry: false service1 启动类Service1Application
+@SpringBootApplication @EnableDiscoveryClient @RestController public class Service1Application { public static void main(String[] args) { SpringApplication.</description></item><item><title>新站点</title><link>https://g.nereusyi.com/post/new-website/</link><pubDate>Sun, 14 Apr 2019 16:26:25 +0800</pubDate><guid>https://g.nereusyi.com/post/new-website/</guid><description>本站点采用HUGO生成。在这之前用过不少博客平台，记得最开始开通博客大概在高中，那时候用的是百度空间，文笔不算好，所以博文都还是转载的多，也在上面认识了不少人。之后过了不久，百度空间被关闭了。
 然后下一个用的博客是网易163博客，用了一段时间之后就懒了，一直没更新，最近上去发现163博客也要被关闭了，变成了lofter提供服务。
 刚开始参加工作的时候，用了OSC的博客，虽然文笔还是一样不好，但还是发表了一些博文，不过发表的博文数量并不多，内容多半是记录和学习笔记。
-目前除了这个站点，还有使用Blogger。</description>
-    </item>
-    
-  </channel>
-</rss>
+目前除了这个站点，还有使用Blogger。</description></item></channel></rss>

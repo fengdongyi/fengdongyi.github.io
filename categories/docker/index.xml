@@ -1,37 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>docker on Nereus</title>
-    <link>/categories/docker/</link>
-    <description>Recent content in docker on Nereus</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 28 Apr 2019 22:28:09 +0800</lastBuildDate>
-    
-	<atom:link href="/categories/docker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Docker基础总结</title>
-      <link>/post/2019/docker-basic/</link>
-      <pubDate>Sun, 28 Apr 2019 22:28:09 +0800</pubDate>
-      
-      <guid>/post/2019/docker-basic/</guid>
-      <description>对开发者来说，了解一些Docker基础用法和原理有不少好处，比如在开发机上使用Docker，解决“我的机子上运行没问题”这样的情况，技术选型等。下面总结了一些常用概念和命令，其中还包含一些个人的理解，随着越来越深入的使用，本文也会持续更新。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on NereusYi</title><link>https://g.nereusyi.com/categories/docker/</link><description>Recent content in docker on NereusYi</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 28 Apr 2019 22:28:09 +0800</lastBuildDate><atom:link href="https://g.nereusyi.com/categories/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker基础总结</title><link>https://g.nereusyi.com/post/2019/docker-basic/</link><pubDate>Sun, 28 Apr 2019 22:28:09 +0800</pubDate><guid>https://g.nereusyi.com/post/2019/docker-basic/</guid><description>对开发者来说，了解一些Docker基础用法和原理有不少好处，比如在开发机上使用Docker，解决“我的机子上运行没问题”这样的情况，技术选型等。下面总结了一些常用概念和命令，其中还包含一些个人的理解，随着越来越深入的使用，本文也会持续更新。
 Docker概况 Docker是什么 Docker是一个操作系统级的虚拟化容器平台，用Go语言实现。Docker主要用于部署和运行应用，并包含应用的所有依赖。通过Docker，可以在一台主机上隔离多个应用，以及确保应用能在不同环境下以相同方式运行。
 Docker目前有两种版本
- Community Edition (CE) Enterprise Edition (EE)  Docker引擎(Docker Engine) Docker引擎是Docker的主要核心，采用C/S结构，包含以下组件
- docker daemon
+Community Edition (CE) Enterprise Edition (EE) Docker引擎(Docker Engine) Docker引擎是Docker的主要核心，采用C/S结构，包含以下组件
+docker daemon
 docker daemon是一个在后台运行的服务，用于创建和管理docker组件，比如：镜像、容器、网络和数据卷 docker REST API
 docker REST API用来控制docker daemon docker CLI
-docker CLI是命令行工具(平常用的docker命令)，docker CLI是通过docker REST API、脚本或直接通过docker daemon命令来控制docker daemon  Docker组件 Docker主要组件有
- 镜像(image) 容器(container) 网络(network) 存储(storage)  镜像 镜像是构建容器的模版。一个镜像包含应用和应用运行所需要的所有依赖。可以通过registry存储和分发，registry是一个类似maven仓库的服务。
+docker CLI是命令行工具(平常用的docker命令)，docker CLI是通过docker REST API、脚本或直接通过docker daemon命令来控制docker daemon Docker组件 Docker主要组件有
+镜像(image) 容器(container) 网络(network) 存储(storage) 镜像 镜像是构建容器的模版。一个镜像包含应用和应用运行所需要的所有依赖。可以通过registry存储和分发，registry是一个类似maven仓库的服务。
 容器 容器是镜像的一个运行实例。可以从一个镜像中创建多个容器。如果删除一个容器，那么容器内的数据也会被删除。
 可以把Docker镜像想象成虚拟机的快照，而容器就是通过快照创建的虚拟机。
 也可以把镜像想象成Java中的类，而容器就是类的实例对象。
 网络 Docker安装之后默认有三种网络:none,bridge和host。
-存储 默认情况下，当容器被删除的时候，容器里的数据也会跟着容器被删除，同时想要转移容器内的数据也不容易。Docker有以下几种持久化存储的选择 - 数据卷(Data Volumes) - 数据卷容器(Data Volume Container) - 直接挂载主机目录(Directory Mounts) - 存储插件(Storage Plugins)</description>
-    </item>
-    
-  </channel>
-</rss>
+存储 默认情况下，当容器被删除的时候，容器里的数据也会跟着容器被删除，同时想要转移容器内的数据也不容易。Docker有以下几种持久化存储的选择 - 数据卷(Data Volumes) - 数据卷容器(Data Volume Container) - 直接挂载主机目录(Directory Mounts) - 存储插件(Storage Plugins)</description></item></channel></rss>
