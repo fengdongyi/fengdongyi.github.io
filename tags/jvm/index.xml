@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>jvm on NereusYi</title><link>https://g.nereusyi.com/tags/jvm/</link><description>Recent content in jvm on NereusYi</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2020 21:28:09 +0800</lastBuildDate><atom:link href="https://g.nereusyi.com/tags/jvm/index.xml" rel="self" type="application/rss+xml"/><item><title>visualvm的profiler连接问题</title><link>https://g.nereusyi.com/post/2020/02/visualvm-profiler-startup-problem/</link><pubDate>Wed, 05 Feb 2020 21:28:09 +0800</pubDate><guid>https://g.nereusyi.com/post/2020/02/visualvm-profiler-startup-problem/</guid><description>在 Windows 10 上，用JDK8 自带的jvisualvm.exe连接java程序，出现了几个问题。
+问题1：选择profiler分析的时候，一直卡在“正在连接目标VM”： 解决：在命令行中用以下命令启动：
+jvisualvm.exe -J-Dorg.netbeans.profiler.separateConsole=true 用这个方法启动过一次，第二次就可以直接双击启动，不用再从命令行启动了。
+问题2：使用上面方法启动之后，再次选择profiler分析，出现Redefinition failed with error 62 解决：在被分析的程序启动时，加上JVM参数：-Xverify:none。
+JDK内置的visualvm版本比较老，以上问题在我从官网上下载新的1.4.4版本的visualvm后都正常了。在JDK9之后，JDK也不再内置visualvm，所以还是单独下一个备着会比较好。
+参考：
+https://stackoverflow.com/questions/37632783/visualvm-cpu-memory-profiler-stuck-at-connecting-to-the-target-jvm
+https://github.com/oracle/visualvm/issues/33
+https://visualvm.github.io
+https://blogs.oracle.com/java-platform-group/visual-vm-in-jdk-9-and-beyond</description></item></channel></rss>
