@@ -1,0 +1,312 @@
+<!doctype html><html><head><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://g.nereusyi.com/"},"articleSection":"post","name":"使用JMH对Java应用进行微基准测试","headline":"使用JMH对Java应用进行微基准测试","description":"简介 JMH（Java Microbenchmark Harness）是一个帮助开发者更好的实现微基准测试(microbenchmark)的工具，属于OpenJDK项目的一部分。虽然名字叫微基准测试工具，但JMH也可以适用于其他类型的基准测试，对较大型项目的基准测试同样也有帮助。
+为什么需要用JMH来做基准测试 由于JVM会对代码做各种优化，而自己写的基准测试很难考虑到各方面的优化，这样会导致测试的结果可能跟线上的相差较大。JMH本身虽然不能完全消除这些优化的影响，但是它能帮助减轻这方面的影响。
+本文使用环境：Java 8
+使用Maven构建运行JMH 使用Maven构建运行JMH是被OpenJDK团队推荐的使用方式，因为该方式能产生更加可靠的结果。
+使用Maven创建新项目 使用该命令可以创建一个基于Maven的JMH模板项目：
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=org.openjdk.jmh -DarchetypeArtifactId=jmh-java-benchmark-archetype -DarchetypeVersion=1.25.2 -DgroupId=com.nereusyi.demos -DartifactId=jmh-template -Dversion=1.0   官方示例的命令行参数中，没有-DarchetypeVersion=1.25.2这行，那样默认会生成较老版本的模板项目，需要较多改动才能适配新版本的Java，所以最好加上该参数。也可以在maven仓库上查看JMH的最新版本并替换
+ 部分输出如下：
+[INFO] ---------------------------------------------------------------------------- [INFO] Using following parameters for creating project from Archetype: jmh-java-benchmark-archetype:1.25.2 [INFO] ---------------------------------------------------------------------------- [INFO] Parameter: groupId, Value: com.nereusyi.demos [INFO] Parameter: artifactId, Value: jmh-template [INFO] Parameter: version, Value: 1.0 [INFO] Parameter: package, Value: com.nereusyi.demos [INFO] Parameter: packageInPathFormat, Value: com/nereusyi/demos [INFO] Parameter: package, Value: com.","inLanguage":"en","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2020","datePublished":"2020-10-25 14:45:15 &#43;0800 CST","dateModified":"2020-10-25 14:45:15 &#43;0800 CST","url":"https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/","wordCount":"909","keywords":["java","performance","Blog"]}</script><meta charset=utf-8><title>使用JMH对Java应用进行微基准测试 - NereusYi</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.54.0"><meta name=description content="Nereus Yi 的博客,主要关注Java , Spring , Spring Boot , Spring Cloud , Design Pattern ,  Docker , Kubernetes , 微服务等主题"><meta name=twitter:card content=summary><meta name=twitter:title content=使用JMH对Java应用进行微基准测试><meta name=twitter:description content="简介 JMH（Java Microbenchmark Harness）是一个帮助开发者更好的实现微基准测试(microbenchmark)的工具，属于OpenJDK项目的一部分。虽然名字叫微基准测试工具，但JMH也可以适用于其他类型的基准测试，对较大型项目的基准测试同样也有帮助。
+为什么需要用JMH来做基准测试 由于JVM会对代码做各种优化，而自己写的基准测试很难考虑到各方面的优化，这样会导致测试的结果可能跟线上的相差较大。JMH本身虽然不能完全消除这些优化的影响，但是它能帮助减轻这方面的影响。
+本文使用环境：Java 8
+使用Maven构建运行JMH 使用Maven构建运行JMH是被OpenJDK团队推荐的使用方式，因为该方式能产生更加可靠的结果。
+使用Maven创建新项目 使用该命令可以创建一个基于Maven的JMH模板项目：
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=org.openjdk.jmh -DarchetypeArtifactId=jmh-java-benchmark-archetype -DarchetypeVersion=1.25.2 -DgroupId=com.nereusyi.demos -DartifactId=jmh-template -Dversion=1.0   官方示例的命令行参数中，没有-DarchetypeVersion=1.25.2这行，那样默认会生成较老版本的模板项目，需要较多改动才能适配新版本的Java，所以最好加上该参数。也可以在maven仓库上查看JMH的最新版本并替换
+ 部分输出如下：
+[INFO] ---------------------------------------------------------------------------- [INFO] Using following parameters for creating project from Archetype: jmh-java-benchmark-archetype:1.25.2 [INFO] ---------------------------------------------------------------------------- [INFO] Parameter: groupId, Value: com.nereusyi.demos [INFO] Parameter: artifactId, Value: jmh-template [INFO] Parameter: version, Value: 1.0 [INFO] Parameter: package, Value: com.nereusyi.demos [INFO] Parameter: packageInPathFormat, Value: com/nereusyi/demos [INFO] Parameter: package, Value: com."><meta property=og:title content=使用JMH对Java应用进行微基准测试><meta property=og:description content="简介 JMH（Java Microbenchmark Harness）是一个帮助开发者更好的实现微基准测试(microbenchmark)的工具，属于OpenJDK项目的一部分。虽然名字叫微基准测试工具，但JMH也可以适用于其他类型的基准测试，对较大型项目的基准测试同样也有帮助。
+为什么需要用JMH来做基准测试 由于JVM会对代码做各种优化，而自己写的基准测试很难考虑到各方面的优化，这样会导致测试的结果可能跟线上的相差较大。JMH本身虽然不能完全消除这些优化的影响，但是它能帮助减轻这方面的影响。
+本文使用环境：Java 8
+使用Maven构建运行JMH 使用Maven构建运行JMH是被OpenJDK团队推荐的使用方式，因为该方式能产生更加可靠的结果。
+使用Maven创建新项目 使用该命令可以创建一个基于Maven的JMH模板项目：
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=org.openjdk.jmh -DarchetypeArtifactId=jmh-java-benchmark-archetype -DarchetypeVersion=1.25.2 -DgroupId=com.nereusyi.demos -DartifactId=jmh-template -Dversion=1.0   官方示例的命令行参数中，没有-DarchetypeVersion=1.25.2这行，那样默认会生成较老版本的模板项目，需要较多改动才能适配新版本的Java，所以最好加上该参数。也可以在maven仓库上查看JMH的最新版本并替换
+ 部分输出如下：
+[INFO] ---------------------------------------------------------------------------- [INFO] Using following parameters for creating project from Archetype: jmh-java-benchmark-archetype:1.25.2 [INFO] ---------------------------------------------------------------------------- [INFO] Parameter: groupId, Value: com.nereusyi.demos [INFO] Parameter: artifactId, Value: jmh-template [INFO] Parameter: version, Value: 1.0 [INFO] Parameter: package, Value: com.nereusyi.demos [INFO] Parameter: packageInPathFormat, Value: com/nereusyi/demos [INFO] Parameter: package, Value: com."><meta property=og:type content=article><meta property=og:url content=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/><meta property=article:published_time content=2020-10-25T14:45:15&#43;08:00><meta property=article:modified_time content=2020-10-25T14:45:15&#43;08:00><meta property=og:image content=https://g.nereusyi.com//images/logo.png><meta property=og:image:type content=image/png><meta property=og:image:width content=512><meta property=og:image:height content=512><meta content=java,jmh,benchmark name=keywords><meta itemprop=name content=使用JMH对Java应用进行微基准测试><meta itemprop=description content="简介 JMH（Java Microbenchmark Harness）是一个帮助开发者更好的实现微基准测试(microbenchmark)的工具，属于OpenJDK项目的一部分。虽然名字叫微基准测试工具，但JMH也可以适用于其他类型的基准测试，对较大型项目的基准测试同样也有帮助。
+为什么需要用JMH来做基准测试 由于JVM会对代码做各种优化，而自己写的基准测试很难考虑到各方面的优化，这样会导致测试的结果可能跟线上的相差较大。JMH本身虽然不能完全消除这些优化的影响，但是它能帮助减轻这方面的影响。
+本文使用环境：Java 8
+使用Maven构建运行JMH 使用Maven构建运行JMH是被OpenJDK团队推荐的使用方式，因为该方式能产生更加可靠的结果。
+使用Maven创建新项目 使用该命令可以创建一个基于Maven的JMH模板项目：
+mvn archetype:generate -DinteractiveMode=false -DarchetypeGroupId=org.openjdk.jmh -DarchetypeArtifactId=jmh-java-benchmark-archetype -DarchetypeVersion=1.25.2 -DgroupId=com.nereusyi.demos -DartifactId=jmh-template -Dversion=1.0   官方示例的命令行参数中，没有-DarchetypeVersion=1.25.2这行，那样默认会生成较老版本的模板项目，需要较多改动才能适配新版本的Java，所以最好加上该参数。也可以在maven仓库上查看JMH的最新版本并替换
+ 部分输出如下：
+[INFO] ---------------------------------------------------------------------------- [INFO] Using following parameters for creating project from Archetype: jmh-java-benchmark-archetype:1.25.2 [INFO] ---------------------------------------------------------------------------- [INFO] Parameter: groupId, Value: com.nereusyi.demos [INFO] Parameter: artifactId, Value: jmh-template [INFO] Parameter: version, Value: 1.0 [INFO] Parameter: package, Value: com.nereusyi.demos [INFO] Parameter: packageInPathFormat, Value: com/nereusyi/demos [INFO] Parameter: package, Value: com."><meta itemprop=datePublished content=2020-10-25T14:45:15&#43;08:00><meta itemprop=dateModified content=2020-10-25T14:45:15&#43;08:00><meta itemprop=wordCount content=909><meta itemprop=keywords content=java,performance,><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css><link rel=stylesheet href=https://g.nereusyi.com/css/main.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css><link href=//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css rel=stylesheet type=text/css><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140619403-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-140619403-1');</script><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?cad0d60e6cbf96c36edba25513ef42db";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></head><body><div id=wrapper><header id=header><h1><a href=https://g.nereusyi.com/>Nereus</a></h1><nav class=links><ul><li><a href=https://g.nereusyi.com/post/><i class="fa fa-home">&nbsp;</i>Home</a></li><li><a href=https://g.nereusyi.com/post/><i class="fa fa-newspaper-o">&nbsp;</i>Blog</a></li><li><a href=https://g.nereusyi.com/categories/><i class="fa fa-sitemap">&nbsp;</i>Categories</a></li><li><a href=https://g.nereusyi.com/about/><i class="fa fa-id-card-o">&nbsp;</i>About</a></li></ul></nav><nav class=main><ul><li id=share-nav class=share-menu style=display:none><a class=fa-share-alt href=#share-menu>Share</a></li><li class=search><a class=fa-search href=#search>Search</a><form id=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
+<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></li><li class=menu><a class=fa-bars href=#menu>Menu</a></li></ul></nav></header><section id=menu><section><form class=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
+<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></section><section><ul class=links><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-home">&nbsp;</i>Home</h3></a></li><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-newspaper-o">&nbsp;</i>Blog</h3></a></li><li><a href=https://g.nereusyi.com/categories/><h3><i class="fa fa-sitemap">&nbsp;</i>Categories</h3></a></li><li><a href=https://g.nereusyi.com/about/><h3><i class="fa fa-id-card-o">&nbsp;</i>About</h3></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/08/java-file-nio-demo/>Java NIO File API使用总结</a></h3><time class=published datetime=2020-08-30>August 30, 2020</time></header></article><a href=/post/ class=button>View more posts</a></div></section></section><section id=share-menu><section id=social-share-nav><ul class=links><header><h3>Share this post <i class="fa fa-smile-o"></i></h3></header><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;text=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;description=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section></section><div id=main><article class=post><header><div class=title><h1><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h1></div><div class=meta><time class=published datetime=2020-10-25>October 25, 2020</time>
+<span class=author></span><p>5 minute read</p></div></header><section id=social-share><ul class=icons><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;text=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;title=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f&amp;description=%e4%bd%bf%e7%94%a8JMH%e5%af%b9Java%e5%ba%94%e7%94%a8%e8%bf%9b%e8%a1%8c%e5%be%ae%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f10%2fuse-jmh-java-benchmark%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section><div id=content><h1 id=简介>简介</h1><p>JMH（Java Microbenchmark Harness）是一个帮助开发者更好的实现微基准测试(microbenchmark)的工具，属于OpenJDK项目的一部分。虽然名字叫微基准测试工具，但JMH也可以适用于其他类型的基准测试，对较大型项目的基准测试同样也有帮助。</p><h2 id=为什么需要用jmh来做基准测试>为什么需要用JMH来做基准测试</h2><p>由于JVM会对代码做各种优化，而自己写的基准测试很难考虑到各方面的优化，这样会导致测试的结果可能跟线上的相差较大。JMH本身虽然不能完全消除这些优化的影响，但是它能帮助减轻这方面的影响。</p><p>本文使用环境：Java 8</p><h1 id=使用maven构建运行jmh>使用Maven构建运行JMH</h1><p>使用Maven构建运行JMH是被OpenJDK团队推荐的使用方式，因为该方式能产生更加可靠的结果。</p><h2 id=使用maven创建新项目>使用Maven创建新项目</h2><p>使用该命令可以创建一个基于Maven的JMH模板项目：</p><pre><code class=language-shell>mvn archetype:generate 
+  -DinteractiveMode=false
+  -DarchetypeGroupId=org.openjdk.jmh
+  -DarchetypeArtifactId=jmh-java-benchmark-archetype
+  -DarchetypeVersion=1.25.2
+  -DgroupId=com.nereusyi.demos
+  -DartifactId=jmh-template
+  -Dversion=1.0
+</code></pre><blockquote><p>官方示例的命令行参数中，没有-DarchetypeVersion=1.25.2这行，那样默认会生成较老版本的模板项目，需要较多改动才能适配新版本的Java，所以最好加上该参数。也可以在maven仓库上查看JMH的最新版本并替换</p></blockquote><p>部分输出如下：</p><pre><code>[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Archetype: jmh-java-benchmark-archetype:1.25.2
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: groupId, Value: com.nereusyi.demos
+[INFO] Parameter: artifactId, Value: jmh-template
+[INFO] Parameter: version, Value: 1.0
+[INFO] Parameter: package, Value: com.nereusyi.demos
+[INFO] Parameter: packageInPathFormat, Value: com/nereusyi/demos
+[INFO] Parameter: package, Value: com.nereusyi.demos
+[INFO] Parameter: groupId, Value: com.nereusyi.demos
+[INFO] Parameter: artifactId, Value: jmh-template
+[INFO] Parameter: version, Value: 1.0
+[INFO] Project created from Archetype in dir: G:\jmh-template
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+</code></pre><p>此时可以在执行命令的目录下看到文件夹名字为<code>jmh-template</code>的Maven项目。</p><h2 id=编写测试方法>编写测试方法</h2><p>在刚生成的<code>jmh-template</code>里，可以看到一个生成的<code>MyBenchmark.java</code>类：</p><pre><code class=language-java>package com.nereusyi.demos;
+
+import org.openjdk.jmh.annotations.Benchmark;
+
+public class MyBenchmark {
+
+    @Benchmark
+    public void testMethod() {
+        // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
+        // Put your benchmark code here.
+    }
+
+}
+</code></pre><p>可以把需要测试的方法放到<code>testMethod</code>中：</p><pre><code class=language-java>@Benchmark
+public int[] testMethod() {
+    // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
+    // Put your benchmark code here.
+    int[] input = IntStream.range(1, 10000).toArray();
+    int inputLength = input.length;
+    int temp;
+    boolean is_sorted;
+    for (int i = 0; i &lt; inputLength; i++) {
+        is_sorted = true;
+        for (int j = 1; j &lt; (inputLength - i); j++) {
+            if (input[j - 1] &gt; input[j]) {
+                temp = input[j - 1];
+                input[j - 1] = input[j];
+                input[j] = temp;
+                is_sorted = false;
+            }
+        }
+        if (is_sorted) break;
+    }
+    return input;
+}
+</code></pre><blockquote><p>这里把原来的<code>void</code>返回值修改了，是为了避免JVM的<code>Dead Code</code>优化。下面会介绍更多相关技巧。</p></blockquote><h2 id=构建jmh项目>构建JMH项目</h2><p>现在可以在命令行进入<code>jmh-template</code>项目（<code>cd jmh-template</code>）构建：</p><pre><code class=language-shell>mvn clean package
+</code></pre><p>构建之后，会生成<code>target/benchmarks.jar</code>文件。</p><p><code>benchmarks.jar</code>文件包含运行基准测试所需要的所有依赖，所以可以把该文件复制到其他机器上运行测试。</p><h2 id=运行基准测试>运行基准测试</h2><p>用<code>java -jar</code>运行就可以：</p><pre><code class=language-shell>java -jar tartget/benchmarks.jar
+</code></pre><p>运行基准测试需要一些时间，因为JMH会做预热等操作。同时也需要在运行基准测试时，关闭其他应用程序，以便生成更可靠的基准测试结果。</p><p>测试结果输出：</p><pre><code>Benchmark                Mode  Cnt       Score     Error  Units
+MyBenchmark.testMethod  thrpt   25  142673.012 ± 369.963  ops/s
+</code></pre><h1 id=在应用代码中运行jmh>在应用代码中运行JMH</h1><p>也可以通过编程方式运行JMH基准测试。首先需要在<code>pom.xml</code>中引入JMH依赖：</p><pre><code class=language-xml>&lt;dependency&gt;
+    &lt;groupId&gt;org.openjdk.jmh&lt;/groupId&gt;
+    &lt;artifactId&gt;jmh-core&lt;/artifactId&gt;
+    &lt;version&gt;1.25.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.openjdk.jmh&lt;/groupId&gt;
+    &lt;artifactId&gt;jmh-generator-annprocess&lt;/artifactId&gt;
+    &lt;version&gt;1.25.2&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre><p>测试代码如下：</p><pre><code class=language-java>public class JmhDemo {
+
+    @Benchmark
+    public int[] testMethod(){
+        int[] input = IntStream.range(1, 10000).toArray();
+        int inputLength = input.length;
+        int temp;
+        boolean is_sorted;
+
+        for (int i = 0; i &lt; inputLength; i++) {
+            is_sorted = true;
+            for (int j = 1; j &lt; (inputLength - i); j++) {
+                if (input[j - 1] &lt; input[j]) {
+                    temp = input[j - 1];
+                    input[j - 1] = input[j];
+                    input[j] = temp;
+                    is_sorted = false;
+                }
+            }
+            if (is_sorted) break;
+        }
+        return input;
+    }
+
+    @Benchmark
+    public int[] testMethod2() {
+        int[] input = IntStream.range(1, 10000).toArray();
+        for (int i = 1; i &lt; input.length; i++) {
+            int key = input[i];
+            int j = i - 1;
+            while (j &gt;= 0 &amp;&amp; input[j] &lt; key) {
+                input[j + 1] = input[j];
+                j = j - 1;
+            }
+            input[j + 1] = key;
+        }
+        return input;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        org.openjdk.jmh.Main.main(args);
+    }
+}
+</code></pre><p>直接运行<code>main</code>方法就可以运行JMH测试。</p><p>还有一种可以传入各种构建参数的API：</p><pre><code class=language-java>Options options = new OptionsBuilder()
+                .jvmArgs(&quot;-Xmx64m&quot;)
+                .shouldFailOnError(true)
+                .build();
+
+new Runner(options).run();
+</code></pre><h1 id=配置jmh>配置JMH</h1><p>JMH还有很多配置，可以根据需要进行配置。</p><h2 id=benchmarkmode>BenchmarkMode</h2><p>JMH可以用不同的模式运行，不同模式测试不同的指标，具体模式如下：</p><ul><li>Throughput ：测试方法的吞吐量</li><li>AverageTime：测试方法的平均执行时间</li><li>SampleTime：测试方法的最长时间、最短时间等</li><li>SingleShotTime：测试方法单次执行的时间（没有预热的情况下的表现，通常用于测试方法冷启动的性能）</li><li>All ： 测试以上所有情况</li></ul><p>默认模式是Throughput。使用示例片段如下：</p><pre><code class=language-java>import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+
+...
+
+@Benchmark
+@BenchmarkMode(Mode.Throughput)
+public int[] testMethod() {
+    int[] input = IntStream.range(1, 10000).toArray();
+    int inputLength = input.length;
+    int temp;
+    boolean is_sorted;
+
+    for (int i = 0; i &lt; inputLength; i++) {
+        is_sorted = true;
+        for (int j = 1; j &lt; (inputLength - i); j++) {
+            if (input[j - 1] &lt; input[j]) {
+                temp = input[j - 1];
+                input[j - 1] = input[j];
+                input[j] = temp;
+                is_sorted = false;
+            }
+        }
+        if (is_sorted) break;
+    }
+    return input;
+}
+</code></pre><h2 id=state>State</h2><p>State用于初始化一些参数。如果生成数据的代码不需要加入基准测试的执行时间，可以用State。State需要用Class定义，使用的时候作为方法参数传入测试的方法。示例如下：</p><pre><code class=language-java>public class JmhDemo {
+
+    @State(Scope.Benchmark)
+    public static class InputState {
+        int[] input = IntStream.range(1, 10000).toArray();
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    public int[] testMethod(InputState inputState) {
+        int[] input = inputState.input;
+        int inputLength = input.length;
+        int temp;
+        boolean is_sorted;
+
+        for (int i = 0; i &lt; inputLength; i++) {
+            is_sorted = true;
+            for (int j = 1; j &lt; (inputLength - i); j++) {
+                if (input[j - 1] &lt; input[j]) {
+                    temp = input[j - 1];
+                    input[j - 1] = input[j];
+                    input[j] = temp;
+                    is_sorted = false;
+                }
+            }
+            if (is_sorted) break;
+        }
+        return input;
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    public int[] testMethod2(InputState inputState) {
+        int[] input = inputState.input;
+        for (int i = 1; i &lt; input.length; i++) {
+            int key = input[i];
+            int j = i - 1;
+            while (j &gt;= 0 &amp;&amp; input[j] &lt; key) {
+                input[j + 1] = input[j];
+                j = j - 1;
+            }
+            input[j + 1] = key;
+        }
+        return input;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        org.openjdk.jmh.Main.main(args);
+    }
+}
+</code></pre><p>在这个示例中，类<code>InputState</code>作为参数传入Benchmark方法。</p><h3 id=state-scope>State Scope</h3><p>@State注解接收一个Scope参数。State对象可以被多次初始化，Scope定义了具体的初始化行为，具体值如下：</p><ul><li>Thread：每个线程创建自己的State对象</li><li>Group：一组线程创建一个State对象</li><li>Benchmark：所有在线程在一个Benchmark中，共享同一个State对象</li></ul><h3 id=state类>State类</h3><p>被@State注解的类需要遵守以下几条规则：</p><ul><li>类必须被<code>public</code>修饰</li><li>如果是嵌套类，必须被<code>static</code>修饰</li><li>类必须要有无参构造器</li></ul><p>如果没有遵守以上规则，编译代码时会报错。</p><h2 id=state类的-setup和-teardown>State类的@Setup和@TearDown</h2><p>@Setup表示在传入Benchmark方法前，调用被注解的方法。@TearDown表示在执行完Benchmark方法后，调用被注解的方法。被@Setup和@TearDown注解的方法，其执行时间不会被算在Benchmark方法中。使用示例如下：</p><pre><code class=language-java>@State(Scope.Benchmark)
+public static class InputState {
+
+    @Setup(Level.Trial)
+    public void setup(){
+        System.out.println(&quot;setup&quot;);
+    }
+
+    int[] input = IntStream.range(1, 10000).toArray();
+
+    @TearDown(Level.Trial)
+    public void tearDown(){
+        System.out.println(&quot;tearDown&quot;);
+    }
+}
+</code></pre><p>这两个注解可以传入一个Level的参数，这个参数有3个值：</p><ul><li>Level.Trial：在预热和循环执行Benchmark方法时调用一次</li><li>Level.Iteration：每次开始循环执行Benchmark方法时调用一次</li><li>Level.Invocation：每次调用Benchmark方法时调用一次</li></ul><h2 id=benchmark-timeunit>Benchmark TimeUnit</h2><p>在JMH中，使用@OutputTimeUnit注解可以指定输出结果时间显示的单位，它接收<code>java.util.concurrent.TimeUnit</code>作为参数。可以注解在类或具体方法上，示例如下：</p><pre><code class=language-java>@OutputTimeUnit(TimeUnit.MILLISECONDS)
+public class JmhDemo {
+    ...
+}
+</code></pre><h1 id=jmh基准测试代码注意事项>JMH基准测试代码注意事项</h1><p>虽然JMH会对基准测试的代码做大部分工作，但想要写一个好的JMH基准测试代码，还是需要注意一些JVM的优化，不然测试结果很可能没有参考意义。</p><h2 id=无用代码-dead-code-优化>无用代码(Dead Code)优化</h2><p>JVM如果发现计算的结果没有被使用，那么JVM就会认为这是一段无用代码并优化掉，导致基准测试结果没有参考意义。示例如下：</p><pre><code class=language-java>@Benchmark
+public void testMethod3() {
+    int a = 1 ;
+    int b = 2 ;
+    int sum = a + b;
+}
+</code></pre><p>在这个示例中，结果<code>sum</code>没有被其他地方使用，JVM会发现这个情况，然后优化掉这段代码，导致实际上被测试的方法里没有代码被执行。</p><p>下面介绍避免无用代码优化的办法。</p><h3 id=把结果作为benchmark方法返回值>把结果作为Benchmark方法返回值</h3><p>可以把上面的<code>testMethod3</code>改为下面的形式：</p><pre><code class=language-java>@Benchmark
+public int testMethod3() {
+    int a = 1 ;
+    int b = 2 ;
+    int sum = a + b;
+    return sum;
+}
+</code></pre><p>现在<code>sum</code>作为返回值返回，因为这个值在调用方可能会用到，所以JVM就不会优化这段代码了。</p><h3 id=把结果传入blackhole中>把结果传入Blackhole中</h3><p>也可以把结果放入JMH提供的Blackhole对象中，示例如下：</p><pre><code class=language-java>@Benchmark
+public void testMethod3(Blackhole blackhole) {
+    int a = 1 ;
+    int b = 2 ;
+    int sum = a + b;
+    blackhole.consume(sum);
+}
+</code></pre><p>现在<code>sum</code>作为参数传入Blackhole对象中，因为这个值可能在Blackhole的<code>consume</code>方法中使用，所以JVM也不会优化这段代码。</p><h2 id=常量折叠-constant-folding-优化>常量折叠(Constant Folding)优化</h2><p>如果一个方法是基于常量的计算，并且结果总是同一个值，那么JVM发现之后，会在之后的调用中，直接把结果作为返回值返回，这就是常量折叠优化。拿上节的<code>testMethod3</code>作为示例：</p><pre><code class=language-java>@Benchmark
+public int testMethod3() {
+    int a = 1 ;
+    int b = 2 ;
+    int sum = a + b;
+    return sum;
+}
+</code></pre><p>在JVM发现<code>sum</code>的计算是基于常量，并且结果也总是同一个值时，该方法有可能会被优化成如下代码：</p><pre><code class=language-java>@Benchmark
+public int testMethod3() {
+    return 3;
+}
+</code></pre><p>甚至有可能在调用的地方直接把结果3内联起来。</p><p>为了避免JVM的常量折叠优化，可以把方法中的常量抽取成从其他对象（如：State对象）中获取。示例如下：</p><pre><code class=language-java>@State(Scope.Benchmark)
+public static class InputState2 {
+    int a = 1;
+    int b = 2;
+}
+
+@Benchmark
+public void testMethod3(InputState2 inputState2,Blackhole blackhole) {
+    int sum = inputState2.a + inputState2.b;
+    blackhole.consume(sum);
+}
+</code></pre><h2 id=循环优化>循环优化</h2><p>JVM会对循环有一定的优化，所以最好不要在被基准测试的方法外再套一层循环，避免对测试结果的准确性有负面影响。</p><h1 id=总结>总结</h1><p>本文主要总结了JMH的使用方法和注意事项，示例工程在<a href=https://github.com/nereusyi/java-api-demos/tree/master/jmh>Github</a>上。</p><h1 id=参考资料>参考资料</h1><p>[1]JMH的Github仓库:<a href=https://github.com/openjdk/jmh>https://github.com/openjdk/jmh</a></p><p>[2]<a href=https://www.oracle.com/technical-resources/articles/java/architect-benchmarking.html>https://www.oracle.com/technical-resources/articles/java/architect-benchmarking.html</a></p><p>[3]<a href=http://tutorials.jenkov.com/java-performance/jmh.html>http://tutorials.jenkov.com/java-performance/jmh.html</a></p></div><footer><ul class=stats><li class=categories><ul><i class="fa fa-folder"></i><li><a class=article-category-link href=https://g.nereusyi.com/categories/java>java</a></li><li><a class=article-category-link href=https://g.nereusyi.com/categories/performance>performance</a></li></ul></li><li class=tags><ul><i class="fa fa-tags"></i><li><a class=article-category-link href=https://g.nereusyi.com/tags/java>java</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/performance>performance</a></li></ul></li></ul></footer></article><article class=post><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"nereusyi"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article><ul class="actions pagination"><li><a href=https://g.nereusyi.com/post/2020/08/java-file-nio-demo/ class="button big previous">Java NIO File API使用总结</a></li></ul></div><section id=sidebar><section id=intro><a href=https://g.nereusyi.com/ class=logo><img src=https://g.nereusyi.com/img/web/logo.jpg alt=Nereus></a><header><h2>Nereus</h2><p>一名Java开发</p></header><ul class=icons><li><a href=//github.com/ivyboy target=_blank title=GitHub class="fa fa-github"></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><div class=posts-container><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/08/java-file-nio-demo/>Java NIO File API使用总结</a></h3><time class=published datetime=2020-08-30>August 30, 2020</time></header></article></div><a href=/post/ class=button>View more posts</a></div></section><section id=categories><header><h3><a href=https://g.nereusyi.com/categories/>Categories</a></h3></header><p><article><header><a href=https://g.nereusyi.com/categories/java/>java</a>
+<span style=float:right>6</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/docker/>docker</a>
+<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/jvm/>jvm</a>
+<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/devops/>devops</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/example/>example</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/life/>life</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/performance/>performance</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-boot/>spring boot</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/tool/>tool</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/%E5%B0%8F%E6%8A%80%E5%B7%A7/>小技巧</a>
+<span style=float:right>1</span></header></article></p></section><section id=footer><p class=copyright>&copy; 2020
+NereusYi
+.
+Powered by <a href=//gohugo.io target=_blank>Hugo</a>
+<a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/><img alt="Creative Commons License" style=border-width:0 src=https://i.creativecommons.org/l/by-nc/4.0/88x31.png></a><br>This site is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/>Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p></section></section></div><a id=back-to-top href=# class="fa fa-arrow-up fa-border fa-2x"></a><script src=//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js></script><script src=//cdn.bootcss.com/highlight.js/9.11.0/languages/java.min.js></script><script>hljs.configure({languages:[]});hljs.initHighlightingOnLoad();</script><script src=https://code.jquery.com/jquery-3.2.1.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js></script><script src=https://g.nereusyi.com/js/util.js></script><script src=https://g.nereusyi.com/js/main.js></script><script src=https://g.nereusyi.com/js/backToTop.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
