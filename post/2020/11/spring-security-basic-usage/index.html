@@ -1,0 +1,206 @@
+<!doctype html><html><head><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://g.nereusyi.com/"},"articleSection":"post","name":"Spring Security整合进Spring Boot中的基础用法","headline":"Spring Security整合进Spring Boot中的基础用法","description":"Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度","inLanguage":"en","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2020","datePublished":"2020-11-30 23:45:15 &#43;0800 CST","dateModified":"2020-11-30 23:45:15 &#43;0800 CST","url":"https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/","wordCount":"435","keywords":["spring security","spring boot","Blog"]}</script><meta charset=utf-8><title>Spring Security整合进Spring Boot中的基础用法 - NereusYi</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.54.0"><meta name=description content="Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度"><meta name=twitter:card content=summary><meta name=twitter:title content="Spring Security整合进Spring Boot中的基础用法"><meta name=twitter:description content="Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度"><meta property=og:title content="Spring Security整合进Spring Boot中的基础用法"><meta property=og:description content="Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度"><meta property=og:type content=article><meta property=og:url content=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/><meta property=article:published_time content=2020-11-30T23:45:15&#43;08:00><meta property=article:modified_time content=2020-11-30T23:45:15&#43;08:00><meta property=og:image content=https://g.nereusyi.com//images/logo.png><meta property=og:image:type content=image/png><meta property=og:image:width content=512><meta property=og:image:height content=512><meta content="java,spring,spring security" name=keywords><meta itemprop=name content="Spring Security整合进Spring Boot中的基础用法"><meta itemprop=description content="Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度"><meta itemprop=datePublished content=2020-11-30T23:45:15&#43;08:00><meta itemprop=dateModified content=2020-11-30T23:45:15&#43;08:00><meta itemprop=wordCount content=435><meta itemprop=keywords content="spring security,spring boot,"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css><link rel=stylesheet href=https://g.nereusyi.com/css/main.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css><link href=//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css rel=stylesheet type=text/css><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140619403-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-140619403-1');</script><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?cad0d60e6cbf96c36edba25513ef42db";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></head><body><div id=wrapper><header id=header><h1><a href=https://g.nereusyi.com/>Nereus</a></h1><nav class=links><ul><li><a href=https://g.nereusyi.com/post/><i class="fa fa-home">&nbsp;</i>Home</a></li><li><a href=https://g.nereusyi.com/post/><i class="fa fa-newspaper-o">&nbsp;</i>Blog</a></li><li><a href=https://g.nereusyi.com/categories/><i class="fa fa-sitemap">&nbsp;</i>Categories</a></li><li><a href=https://g.nereusyi.com/about/><i class="fa fa-id-card-o">&nbsp;</i>About</a></li></ul></nav><nav class=main><ul><li id=share-nav class=share-menu style=display:none><a class=fa-share-alt href=#share-menu>Share</a></li><li class=search><a class=fa-search href=#search>Search</a><form id=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
+<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></li><li class=menu><a class=fa-bars href=#menu>Menu</a></li></ul></nav></header><section id=menu><section><form class=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
+<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></section><section><ul class=links><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-home">&nbsp;</i>Home</h3></a></li><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-newspaper-o">&nbsp;</i>Blog</h3></a></li><li><a href=https://g.nereusyi.com/categories/><h3><i class="fa fa-sitemap">&nbsp;</i>Categories</h3></a></li><li><a href=https://g.nereusyi.com/about/><h3><i class="fa fa-id-card-o">&nbsp;</i>About</h3></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/>Spring Security整合进Spring Boot中的基础用法</a></h3><time class=published datetime=2020-11-30>November 30, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article><a href=/post/ class=button>View more posts</a></div></section></section><section id=share-menu><section id=social-share-nav><ul class=links><header><h3>Share this post <i class="fa fa-smile-o"></i></h3></header><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;text=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;description=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section></section><div id=main><article class=post><header><div class=title><h1><a href=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/>Spring Security整合进Spring Boot中的基础用法</a></h1><p>Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度</p></div><div class=meta><time class=published datetime=2020-11-30>November 30, 2020</time>
+<span class=author></span><p>3 minute read</p></div></header><section id=social-share><ul class=icons><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;text=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;title=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f&amp;description=Spring%20Security%e6%95%b4%e5%90%88%e8%bf%9bSpring%20Boot%e4%b8%ad%e7%9a%84%e5%9f%ba%e7%a1%80%e7%94%a8%e6%b3%95" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2020%2f11%2fspring-security-basic-usage%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section><div id=content><h1 id=简介>简介</h1><p>Spring Security为应用程序提供了方便的登陆和鉴权的 API ，默认启用各项安全配置，能够简化大量的应用程序安全需求开发。不过由于这些默认启用的各项安全配置，也会让第一次集成Spring Security的开发人员有一定的上手难度。</p><p>使用环境：Java 11 和 <code>Spring Boot 2.3.5.RELEASE</code></p><h1 id=集成spring-security>集成Spring Security</h1><p>在Spring Boot中集成Spring Security与集成其他的框架类似，在<code>pom.xml</code>里引入相关的starter就可以：</p><pre><code class=language-xml>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre><p>由于大部分的使用场景还是web，所以这里也引进Spring MVC做示例。</p><p>现在建立一个<code>Controller</code>作为简单的示例：</p><pre><code class=language-java>@RestController(&quot;foods&quot;)
+public class FoodController {
+
+    private List&lt;String&gt; foods = List.of(&quot;Bread&quot;,&quot;Sandwich&quot;);
+
+    @GetMapping
+    public List&lt;String&gt; getFood(){
+        return foods;
+    }
+
+    @PostMapping
+    public void addFood(String food){
+        foods.add(food);
+    }
+
+    @DeleteMapping
+    public void deleteFood(String food){
+        boolean removed = foods.remove(food);
+        if (!removed) {
+            throw new IllegalArgumentException(&quot;no such food : &quot; + food);
+        }
+    }
+
+}
+</code></pre><p>这时启动项目，会看到在控制台会有类似输出：</p><pre><code>2020-11-26 23:27:23.376  INFO 5264 --- [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f091d11a-2524-40bf-b29d-a6579f6b7a5a
+
+</code></pre><p>这里输出的是随机密码，并且访问<code>http://localhost:8080/foods</code>时，会进入一个页面要求输入账号和密码，默认账号是<code>user</code>，密码就是控制台输出的这串随机密码，填上后就能看到输出了：</p><pre><code class=language-json>[&quot;Bread&quot;,&quot;Sandwich&quot;]
+</code></pre><p>可以看到集成Spring Security后，默认就有了登陆功能。但是大多数项目不会只有一个用户，也不会使用默认的简洁的页面，所以下面介绍如何从数据库中加载用户，如何替换默认登陆页面。</p><h1 id=authentication>Authentication</h1><p>Authentication(Who are you) 就是证明你拥有这个账户，也就是通常所说的登陆流程。</p><h2 id=配置模板>配置模板</h2><p>Spring Security可以帮助简化登陆流程，先需要配置对应的Spring Security配置，配置模板通常如下：</p><pre><code class=language-java>@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+}
+</code></pre><ul><li>为类加上<code>@Configuration</code>和<code>@EnableWebSecurity</code>注解，表示为Spring Security的配置类</li><li>继承<code>WebSecurityConfigurerAdapter</code>，覆盖需要重写的方法</li></ul><h2 id=配置数据库和相关实体>配置数据库和相关实体</h2><p>通常的表单登陆，都是从数据库中查询对应用户名和密码，匹配正确就登陆成功。这里建立一个简单的示例表和数据：</p><pre><code class=language-sql>create table t_user
+(
+	id bigint auto_increment,
+	username varchar(255) not null,
+	password varchar(255) not null,
+	constraint t_user_pk
+		primary key (id)
+);
+
+-- 密码为BCrypt哈希后的结果，密码是admin
+INSERT INTO spring_security_demos.t_user (id, username, password) VALUES (1, 'admin', '$2y$12$dsYcIyVxO5aOtfybzsuUr.Gc8gK8DdcqaRPr.pg6UcYODnhYET1RC');
+</code></pre><p>再引入<code>spring data jdbc</code>和<code>mysql</code>的驱动来连接数据库:</p><pre><code class=language-xml>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-data-jdbc&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;mysql&lt;/groupId&gt;
+			&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre><p>再创建对应的repository和entity，用于数据库操作和映射数据库表：</p><pre><code class=language-java>@Repository
+public interface UserRepository extends CrudRepository&lt;User, Long&gt; {
+
+    Optional&lt;User&gt; findByUsername(String username);
+
+}
+</code></pre><pre><code class=language-java>@Table(&quot;t_user&quot;)
+public class User {
+
+    @Id
+    private Long id;
+
+    private String username;
+
+    private String password;
+
+    // GETTER SETTER
+}
+</code></pre><h2 id=实现spring-security的登陆相关接口>实现Spring Security的登陆相关接口</h2><p>Spring Security有几个接口来定义登陆的相关操作，这里介绍常用的<code>UserDetails</code>和<code>UserDetailsService</code>接口。</p><p><code>UserDetailsService</code>接口只有一个<code>loadUserByUsername</code>方法，表示从数据库或某些地方通过 username 加载用户信息，然后包装成<code>UserDetails</code>返回。</p><p>现在先来简单实现<code>UserDetails</code>接口：</p><pre><code class=language-java>public class UserDetail implements UserDetails {
+
+    private final String username;
+
+    private final String password;
+
+    private Set&lt;SimpleGrantedAuthority&gt; authorities = Collections.emptySet();
+
+    public UserDetail(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public UserDetail(String username, String password, Set&lt;SimpleGrantedAuthority&gt; authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
+    @Override
+    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
+</code></pre><p>再来实现<code>UserDetailsService</code>接口：</p><pre><code class=language-java>public class JdbcUserDetailsService implements UserDetailsService {
+
+    private UserRepository userRepository;
+
+    public JdbcUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;user can't found by username : &quot; + username));
+
+        return new UserDetail(user.getUsername(), user.getPassword());
+    }
+
+}
+</code></pre><h2 id=密码hash算法>密码Hash算法</h2><p>Spring Security在加载用户之后，会对提交的密码进行Hash后，再对比<code>UserDetails</code>中的密码。可以在配置中指定密码的Hash算法，用法在下面的配置中演示。</p><h2 id=配置登陆接口>配置登陆接口</h2><p>实现了登陆相关接口后，需要配置到上面说到的配置模板中，使这些实现能接入到Spring Security。配置如下：</p><pre><code class=language-java>@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Bean
+    @Override
+    protected UserDetailsService userDetailsService() {
+        return new JdbcUserDetailsService(userRepository);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+}
+</code></pre><p>到这里，主要登陆相关的配置就完成了。</p><p>这时启动程序后，在浏览器中输入:<code>http://localhost:8080/foods</code>，这时会看到Spring Security默认的登录页，输入<code>admin/admin</code>登陆后，就可以看到接口的响应了：</p><pre><code class=language-json>[&quot;Bread&quot;,&quot;Sandwich&quot;]
+</code></pre><h2 id=自定义登陆页面>自定义登陆页面</h2><p>想要自定义登陆页面，可以在<code>SecurityConfig</code>配置中覆盖方法：</p><pre><code class=language-java>@Override
+protected void configure(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests()
+        .anyRequest().authenticated()
+        .and().httpBasic()
+        .and().formLogin()
+            .loginPage(&quot;/login.html&quot;)
+            .defaultSuccessUrl(&quot;/foods&quot;,true)
+            .loginProcessingUrl(&quot;/login&quot;).permitAll()
+        .and().csrf().disable();
+}
+</code></pre><ul><li><code>loginPage</code>方法接收登陆页地址</li><li><code>defaultSuccessUrl</code>方法接收登陆成功之后的跳转地址</li><li><code>loginProcessingUrl</code>方法指定处理验证登陆的方法</li><li><code>permitAll()</code>表示这些登陆相关方法不需要登陆就能调用，如果漏了这个，会导致循环重定向</li></ul><h1 id=总结>总结</h1><p>本文主要总结了Spring Security整合Spring Boot的基本用法，示例工程在<a href=https://github.com/nereusyi/spring-security-demos/tree/master/spring-security-basic>Github</a>上。</p><h1 id=参考资料>参考资料</h1><p>[1]<a href=https://www.marcobehler.com/guides/spring-security>https://www.marcobehler.com/guides/spring-security</a></p><p>[2]官方网站:<a href=https://spring.io/projects/spring-security>https://spring.io/projects/spring-security</a></p></div><footer><ul class=stats><li class=categories><ul><i class="fa fa-folder"></i><li><a class=article-category-link href=https://g.nereusyi.com/categories/spring-security>spring security</a></li><li><a class=article-category-link href=https://g.nereusyi.com/categories/spring-boot>spring boot</a></li></ul></li><li class=tags><ul><i class="fa fa-tags"></i><li><a class=article-category-link href=https://g.nereusyi.com/tags/spring-security>spring security</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/spring-boot>spring boot</a></li></ul></li></ul></footer></article><article class=post><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"nereusyi"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article><ul class="actions pagination"><li><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/ class="button big previous">使用JMH对Java应用进行微基准测试</a></li></ul></div><section id=sidebar><section id=intro><a href=https://g.nereusyi.com/ class=logo><img src=https://g.nereusyi.com/img/web/logo.jpg alt=Nereus></a><header><h2>Nereus</h2><p>一名Java开发</p></header><ul class=icons><li><a href=//github.com/ivyboy target=_blank title=GitHub class="fa fa-github"></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><div class=posts-container><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/>Spring Security整合进Spring Boot中的基础用法</a></h3><time class=published datetime=2020-11-30>November 30, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article></div><a href=/post/ class=button>View more posts</a></div></section><section id=categories><header><h3><a href=https://g.nereusyi.com/categories/>Categories</a></h3></header><p><article><header><a href=https://g.nereusyi.com/categories/java/>java</a>
+<span style=float:right>6</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/docker/>docker</a>
+<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/jvm/>jvm</a>
+<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-boot/>spring boot</a>
+<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/devops/>devops</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/example/>example</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/life/>life</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/performance/>performance</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-security/>spring security</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/tool/>tool</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/%E5%B0%8F%E6%8A%80%E5%B7%A7/>小技巧</a>
+<span style=float:right>1</span></header></article></p></section><section id=footer><p class=copyright>&copy; 2020
+NereusYi
+.
+Powered by <a href=//gohugo.io target=_blank>Hugo</a>
+<a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/><img alt="Creative Commons License" style=border-width:0 src=https://i.creativecommons.org/l/by-nc/4.0/88x31.png></a><br>This site is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/>Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p></section></section></div><a id=back-to-top href=# class="fa fa-arrow-up fa-border fa-2x"></a><script src=//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js></script><script src=//cdn.bootcss.com/highlight.js/9.11.0/languages/java.min.js></script><script>hljs.configure({languages:[]});hljs.initHighlightingOnLoad();</script><script src=https://code.jquery.com/jquery-3.2.1.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js></script><script src=https://g.nereusyi.com/js/util.js></script><script src=https://g.nereusyi.com/js/main.js></script><script src=https://g.nereusyi.com/js/backToTop.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
