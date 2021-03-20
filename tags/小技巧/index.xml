@@ -2,4 +2,4 @@
 1、在Collections下的文件夹右键，点击编辑
 2、在Pre-request Scripts选项卡下，添加JS代码：
 添加之后，对整个文件夹下的请求都有效
-pm.request.headers.add({key: &#39;header_name&#39;, value: &#39;header_value&#39; }) pm.request.headers.upsert({key: &#39;header_name&#39;, value: &#39;header_value&#39; }) pm.request.headers.remove(&#39;header_name&#39;) 注意：如果需要看实际发送的请求参数，可以点工具栏的view-&amp;gt;Show Postman Console</description></item></channel></rss>
+pm.request.headers.add({key: &amp;#39;header_name&amp;#39;, value: &amp;#39;header_value&amp;#39; }) pm.request.headers.upsert({key: &amp;#39;header_name&amp;#39;, value: &amp;#39;header_value&amp;#39; }) pm.request.headers.remove(&amp;#39;header_name&amp;#39;) 注意：如果需要看实际发送的请求参数，可以点工具栏的view-&amp;gt;Show Postman Console</description></item></channel></rss>

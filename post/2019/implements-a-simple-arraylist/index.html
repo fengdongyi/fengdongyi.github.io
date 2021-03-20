@@ -1,34 +1,33 @@
-<!doctype html><html><head><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://g.nereusyi.com/"},"articleSection":"post","name":"动手实现:用Java实现一个简单的ArrayList","headline":"动手实现:用Java实现一个简单的ArrayList","description":"ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。","inLanguage":"en","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2019","datePublished":"2019-05-30 23:28:09 &#43;0800 CST","dateModified":"2019-05-30 23:28:09 &#43;0800 CST","url":"https://g.nereusyi.com/post/2019/implements-a-simple-arraylist/","wordCount":"728","keywords":["java","java基础","数据结构","Blog"]}</script><meta charset=utf-8><title>动手实现:用Java实现一个简单的ArrayList - NereusYi</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.54.0"><meta name=description content=ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。><meta name=twitter:card content=summary><meta name=twitter:title content=动手实现:用Java实现一个简单的ArrayList><meta name=twitter:description content=ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。><meta property=og:title content=动手实现:用Java实现一个简单的ArrayList><meta property=og:description content=ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。><meta property=og:type content=article><meta property=og:url content=https://g.nereusyi.com/post/2019/implements-a-simple-arraylist/><meta property=article:published_time content=2019-05-30T23:28:09&#43;08:00><meta property=article:modified_time content=2019-05-30T23:28:09&#43;08:00><meta property=og:image content=https://g.nereusyi.com//images/logo.png><meta property=og:image:type content=image/png><meta property=og:image:width content=512><meta property=og:image:height content=512><meta content=java,arraylist,动手实现,howto name=keywords><meta itemprop=name content=动手实现:用Java实现一个简单的ArrayList><meta itemprop=description content=ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。><meta itemprop=datePublished content=2019-05-30T23:28:09&#43;08:00><meta itemprop=dateModified content=2019-05-30T23:28:09&#43;08:00><meta itemprop=wordCount content=728><meta itemprop=keywords content=java,java基础,数据结构,><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css><link rel=stylesheet href=https://g.nereusyi.com/css/main.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css><link href=//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css rel=stylesheet type=text/css><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140619403-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());gtag('config','UA-140619403-1');</script><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?cad0d60e6cbf96c36edba25513ef42db";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></head><body><div id=wrapper><header id=header><h1><a href=https://g.nereusyi.com/>Nereus</a></h1><nav class=links><ul><li><a href=https://g.nereusyi.com/post/><i class="fa fa-home">&nbsp;</i>Home</a></li><li><a href=https://g.nereusyi.com/post/><i class="fa fa-newspaper-o">&nbsp;</i>Blog</a></li><li><a href=https://g.nereusyi.com/categories/><i class="fa fa-sitemap">&nbsp;</i>Categories</a></li><li><a href=https://g.nereusyi.com/about/><i class="fa fa-id-card-o">&nbsp;</i>About</a></li></ul></nav><nav class=main><ul><li id=share-nav class=share-menu style=display:none><a class=fa-share-alt href=#share-menu>Share</a></li><li class=search><a class=fa-search href=#search>Search</a><form id=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
+<!doctype html><html><head><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/g.nereusyi.com\/"},"articleSection":"post","name":"动手实现:用Java实现一个简单的ArrayList","headline":"动手实现:用Java实现一个简单的ArrayList","description":"ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。","inLanguage":"en","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2019","datePublished":"2019-05-30 23:28:09 \u002b0800 HKT","dateModified":"2019-05-30 23:28:09 \u002b0800 HKT","url":"https:\/\/g.nereusyi.com\/post\/2019\/implements-a-simple-arraylist\/","wordCount":"728","keywords":["java","java基础","数据结构","Blog"]}</script><meta charset=utf-8><title>动手实现:用Java实现一个简单的ArrayList - NereusYi</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.81.0"><meta name=description content="ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。"><meta name=twitter:card content="summary"><meta name=twitter:title content="动手实现:用Java实现一个简单的ArrayList"><meta name=twitter:description content="ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。"><meta property="og:title" content="动手实现:用Java实现一个简单的ArrayList"><meta property="og:description" content="ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。"><meta property="og:type" content="article"><meta property="og:url" content="https://g.nereusyi.com/post/2019/implements-a-simple-arraylist/"><meta property="article:section" content="post"><meta property="article:published_time" content="2019-05-30T23:28:09+08:00"><meta property="article:modified_time" content="2019-05-30T23:28:09+08:00"><meta property="og:image" content="https://g.nereusyi.com//images/logo.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="512"><meta property="og:image:height" content="512"><meta content="java,arraylist,动手实现,howto" name=keywords><meta itemprop=name content="动手实现:用Java实现一个简单的ArrayList"><meta itemprop=description content="ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。"><meta itemprop=datePublished content="2019-05-30T23:28:09+08:00"><meta itemprop=dateModified content="2019-05-30T23:28:09+08:00"><meta itemprop=wordCount content="728"><meta itemprop=keywords content="java,java基础,数据结构,"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css><link rel=stylesheet href=https://g.nereusyi.com/css/main.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css><link href=//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css rel=stylesheet type=text/css><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140619403-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-140619403-1')</script><script>var _hmt=_hmt||[];(function(){var a=document.createElement("script"),b;a.src="https://hm.baidu.com/hm.js?cad0d60e6cbf96c36edba25513ef42db",b=document.getElementsByTagName("script")[0],b.parentNode.insertBefore(a,b)})()</script></head><body><div id=wrapper><header id=header><h1><a href=https://g.nereusyi.com/>Nereus</a></h1><nav class=links><ul><li><a href=https://g.nereusyi.com/post/><i class="fa fa-home">&nbsp;</i>Home</a></li><li><a href=https://g.nereusyi.com/post/><i class="fa fa-newspaper-o">&nbsp;</i>Blog</a></li><li><a href=https://g.nereusyi.com/categories/><i class="fa fa-sitemap">&nbsp;</i>Categories</a></li><li><a href=https://g.nereusyi.com/about/><i class="fa fa-id-card-o">&nbsp;</i>About</a></li></ul></nav><nav class=main><ul><li id=share-nav class=share-menu style=display:none><a class=fa-share-alt href=#share-menu>Share</a></li><li class=search><a class=fa-search href=#search>Search</a><form id=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
 <input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></li><li class=menu><a class=fa-bars href=#menu>Menu</a></li></ul></nav></header><section id=menu><section><form class=search method=get action=//google.com/search><input type=text name=q placeholder=Search>
-<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></section><section><ul class=links><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-home">&nbsp;</i>Home</h3></a></li><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-newspaper-o">&nbsp;</i>Blog</h3></a></li><li><a href=https://g.nereusyi.com/categories/><h3><i class="fa fa-sitemap">&nbsp;</i>Categories</h3></a></li><li><a href=https://g.nereusyi.com/about/><h3><i class="fa fa-id-card-o">&nbsp;</i>About</h3></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/>Spring Security整合进Spring Boot中的基础用法</a></h3><time class=published datetime=2020-11-30>November 30, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article><a href=/post/ class=button>View more posts</a></div></section></section><section id=share-menu><section id=social-share-nav><ul class=links><header><h3>Share this post <i class="fa fa-smile-o"></i></h3></header><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;text=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;description=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section></section><div id=main><article class=post><header><div class=title><h1><a href=https://g.nereusyi.com/post/2019/implements-a-simple-arraylist/>动手实现:用Java实现一个简单的ArrayList</a></h1><p>ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。</p></div><div class=meta><time class=published datetime=2019-05-30>May 30, 2019</time>
-<span class=author></span><p>4 minute read</p></div></header><section id=social-share><ul class=icons><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;text=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList&amp;via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&amp;description=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &amp;body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section><div id=content><h1 id=概述>概述</h1><p>ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。</p><h1 id=动手实现>动手实现</h1><h2 id=成员变量和构造方法>成员变量和构造方法</h2><p>首先看一下类声明，为了更方便实现列表的相关方法，以及面向接口编程，这里声明实现<code>List</code>接口，类命名为SimpleArrayList</p><pre><code class=language-java>public class SimpleArrayList&lt;E&gt; implements List&lt;E&gt; {}
-</code></pre><p>然后再看一下成员变量，这里设计两个成员变量，第一个变量是实际存储数据的数组，第二个变量是数据的大小</p><pre><code class=language-java>private Object[] data;
+<input type=hidden name=as_sitesearch value=https://g.nereusyi.com/></form></section><section><ul class=links><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-home">&nbsp;</i>Home</h3></a></li><li><a href=https://g.nereusyi.com/post/><h3><i class="fa fa-newspaper-o">&nbsp;</i>Blog</h3></a></li><li><a href=https://g.nereusyi.com/categories/><h3><i class="fa fa-sitemap">&nbsp;</i>Categories</h3></a></li><li><a href=https://g.nereusyi.com/about/><h3><i class="fa fa-id-card-o">&nbsp;</i>About</h3></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/>Post</a></h3><time class=published datetime=2021-03-20>March 20, 2021</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2021/03/spring-boot-actuator-demo/>Spring Boot Actuator 2 示例</a></h3><time class=published datetime=2021-03-20>March 20, 2021</time></header></article><a href=/post/ class=button>View more posts</a></div></section></section><section id=share-menu><section id=social-share-nav><ul class=links><header><h3>Share this post <i class="fa fa-smile-o"></i></h3></header><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&text=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList&via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&description=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section></section><div id=main><article class=post><header><div class=title><h1><a href=https://g.nereusyi.com/post/2019/implements-a-simple-arraylist/>动手实现:用Java实现一个简单的ArrayList</a></h1><p>ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。</p></div><div class=meta><time class=published datetime=2019-05-30>May 30, 2019</time>
+<span class=author></span><p>4 minute read</p></div></header><section id=social-share><ul class=icons><li><a href="//twitter.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&text=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList&via=" target=_blank class="share-btn twitter"><i class="fa fa-twitter"></i><p>Twitter</p></a></li><li><a href="//plus.google.com/share?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn google-plus"><i class="fa fa-google-plus"></i><p>Google+</p></a></li><li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn facebook"><i class="fa fa-facebook"></i><p>Facebook</p></a></li><li><a href="//reddit.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn reddit"><i class="fa fa-reddit-alien"></i><p>Reddit</p></a></li><li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn linkedin"><i class="fa fa-linkedin"></i><p>LinkedIn</p></a></li><li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&title=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn stumbleupon"><i class="fa fa-stumbleupon"></i><p>StumbleUpon</p></a></li><li><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f&description=%e5%8a%a8%e6%89%8b%e5%ae%9e%e7%8e%b0%3a%e7%94%a8Java%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84ArrayList" target=_blank class="share-btn pinterest"><i class="fa fa-pinterest-p"></i><p>Pinterest</p></a></li><li><a href="mailto:?subject=Check out this post by &body=https%3a%2f%2fg.nereusyi.com%2fpost%2f2019%2fimplements-a-simple-arraylist%2f" target=_blank class="share-btn email"><i class="fa fa-envelope"></i><p>Email</p></a></li></ul></section><div id=content><h1 id=概述>概述</h1><p>ArrayList是一个可以自动扩容的List接口实现，由命名可以看出是由数组实现。本文尝试编写一个简单的ArrayList实现，通过对比来理解JDK中的ArrayList是如何实现的。本次主要实现ArrayList的常用方法，完成简单的CRUD和迭代器。</p><h1 id=动手实现>动手实现</h1><h2 id=成员变量和构造方法>成员变量和构造方法</h2><p>首先看一下类声明，为了更方便实现列表的相关方法，以及面向接口编程，这里声明实现<code>List</code>接口，类命名为SimpleArrayList</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>SimpleArrayList</span><span style=color:#f92672>&lt;</span>E<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>implements</span> List<span style=color:#f92672>&lt;</span>E<span style=color:#f92672>&gt;</span> <span style=color:#f92672>{}</span>
+</code></pre></div><p>然后再看一下成员变量，这里设计两个成员变量，第一个变量是实际存储数据的数组，第二个变量是数据的大小</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>private</span> Object<span style=color:#f92672>[]</span> data<span style=color:#f92672>;</span>
 
-private int size;
-</code></pre><p>然后在构造方法中初始化数组</p><pre><code class=language-java>public SimpleArrayList() {
-		data = new Object[10];
-}
-</code></pre><h2 id=crud的实现>CRUD的实现</h2><p>首先看一下<code>add</code>方法实现</p><pre><code class=language-java>@Override
-public boolean add(E e) {
-    //判断数组还有没有空间存放新的元素
-    if( (size + 1) &gt; data.length){
-        Object[] newData = new Object[data.length + 10];
-        System.arraycopy(data, 0, newData, 0, data.length);
-        data = newData;
-    }
-    data[size++] = e;
-    return true;
-}
-</code></pre><p>方法先判断数组中还有没有足够空间存放新元素。如果没有足够空间，就创建一个新数组，长度在原来的基础上增加10，再把原来数组的内容拷贝到新数组里，最后把新数组赋值给实际存储数据的成员变量data，这样就完成了扩容。最后再把add的元素放在最后一位，这样<code>add</code>方法就完成了。</p><p>然后再看一下<code>get</code>方法的实现</p><pre><code class=language-java>@SuppressWarnings(&quot;unchecked&quot;)
-@Override
-public E get(int index) {
-    if(index &lt; 0 || index &gt;= size){
-        throw new IndexOutOfBoundsException(&quot;索引越界&quot;);
-    }
-    return (E) data[index];
-}
-</code></pre><p><code>get</code>方法的实现比较简单，首先检查一下传入索引的合法性，然后再返回数组中对应索引的元素。</p><p>下面是<code>set</code>方法实现</p><pre><code>@SuppressWarnings(&quot;unchecked&quot;)
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> size<span style=color:#f92672>;</span>
+</code></pre></div><p>然后在构造方法中初始化数组</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#a6e22e>SimpleArrayList</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+		data <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Object<span style=color:#f92672>[</span>10<span style=color:#f92672>];</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><h2 id=crud的实现>CRUD的实现</h2><p>首先看一下<code>add</code>方法实现</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Override</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>E e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#75715e>//判断数组还有没有空间存放新的元素
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span> <span style=color:#f92672>(</span>size <span style=color:#f92672>+</span> 1<span style=color:#f92672>)</span> <span style=color:#f92672>&gt;</span> data<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>){</span>
+        Object<span style=color:#f92672>[]</span> newData <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Object<span style=color:#f92672>[</span>data<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span> <span style=color:#f92672>+</span> 10<span style=color:#f92672>];</span>
+        System<span style=color:#f92672>.</span><span style=color:#a6e22e>arraycopy</span><span style=color:#f92672>(</span>data<span style=color:#f92672>,</span> 0<span style=color:#f92672>,</span> newData<span style=color:#f92672>,</span> 0<span style=color:#f92672>,</span> data<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>);</span>
+        data <span style=color:#f92672>=</span> newData<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+    data<span style=color:#f92672>[</span>size<span style=color:#f92672>++]</span> <span style=color:#f92672>=</span> e<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>方法先判断数组中还有没有足够空间存放新元素。如果没有足够空间，就创建一个新数组，长度在原来的基础上增加10，再把原来数组的内容拷贝到新数组里，最后把新数组赋值给实际存储数据的成员变量data，这样就完成了扩容。最后再把add的元素放在最后一位，这样<code>add</code>方法就完成了。</p><p>然后再看一下<code>get</code>方法的实现</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@SuppressWarnings</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;unchecked&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#a6e22e>@Override</span>
+<span style=color:#66d9ef>public</span> E <span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span>index <span style=color:#f92672>&lt;</span> 0 <span style=color:#f92672>||</span> index <span style=color:#f92672>&gt;=</span> size<span style=color:#f92672>){</span>
+        <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IndexOutOfBoundsException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;索引越界&#34;</span><span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#f92672>(</span>E<span style=color:#f92672>)</span> data<span style=color:#f92672>[</span>index<span style=color:#f92672>];</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><code>get</code>方法的实现比较简单，首先检查一下传入索引的合法性，然后再返回数组中对应索引的元素。</p><p>下面是<code>set</code>方法实现</p><pre><code>@SuppressWarnings(&quot;unchecked&quot;)
 @Override
 public E set(int index, E element) {
     if(index &lt; 0 || index &gt;= size){
@@ -38,19 +37,19 @@ public E set(int index, E element) {
     data[index] = element;
     return e;
 }
-</code></pre><p><code>set</code>方法首先检查一下传入索引的合法性。通过查看<code>List</code>接口的<code>set</code>方法上的<code>return</code>注释，知道<code>set</code>方法返回的是旧元素，所以这里需要先声明旧元素的变量，再把新元素赋值，最后返回旧元素。</p><p>下面是<code>remove</code>方法，传入Object的版本</p><pre><code class=language-java>@Override
-public boolean remove(Object o) {
-    for (int i = 0; i &lt; size; i++) {
-        if ( o==null ? get(i)==null : o.equals(get(i)) ){
-            if( i != (size-1))
-            	System.arraycopy(data, i + 1, data, i, size - (i + 1) );
-            data[size--] = null;
-            return true;
-        }
-    }
-    return false;
-}
-</code></pre><p>方法传入的是一个object参数，所以要遍历所有元素，然后找到<strong>第一个</strong>对应的元素，再把后面的元素往前移动，覆盖被删除的元素。当被删除的元素是数组中最后一个时，就不再需要移动数组，所以在移动之前加一个判断。</p><h2 id=迭代器>迭代器</h2><p>迭代器的实现类如下</p><pre><code>private class SimapleIterator implements Iterator&lt;E&gt;{
+</code></pre><p><code>set</code>方法首先检查一下传入索引的合法性。通过查看<code>List</code>接口的<code>set</code>方法上的<code>return</code>注释，知道<code>set</code>方法返回的是旧元素，所以这里需要先声明旧元素的变量，再把新元素赋值，最后返回旧元素。</p><p>下面是<code>remove</code>方法，传入Object的版本</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Override</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>Object o<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> size<span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span> o<span style=color:#f92672>==</span><span style=color:#66d9ef>null</span> <span style=color:#f92672>?</span> get<span style=color:#f92672>(</span>i<span style=color:#f92672>)==</span><span style=color:#66d9ef>null</span> <span style=color:#f92672>:</span> o<span style=color:#f92672>.</span><span style=color:#a6e22e>equals</span><span style=color:#f92672>(</span>get<span style=color:#f92672>(</span>i<span style=color:#f92672>))</span> <span style=color:#f92672>){</span>
+            <span style=color:#66d9ef>if</span><span style=color:#f92672>(</span> i <span style=color:#f92672>!=</span> <span style=color:#f92672>(</span>size<span style=color:#f92672>-</span>1<span style=color:#f92672>))</span>
+            	System<span style=color:#f92672>.</span><span style=color:#a6e22e>arraycopy</span><span style=color:#f92672>(</span>data<span style=color:#f92672>,</span> i <span style=color:#f92672>+</span> 1<span style=color:#f92672>,</span> data<span style=color:#f92672>,</span> i<span style=color:#f92672>,</span> size <span style=color:#f92672>-</span> <span style=color:#f92672>(</span>i <span style=color:#f92672>+</span> 1<span style=color:#f92672>)</span> <span style=color:#f92672>);</span>
+            data<span style=color:#f92672>[</span>size<span style=color:#f92672>--]</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>方法传入的是一个object参数，所以要遍历所有元素，然后找到<strong>第一个</strong>对应的元素，再把后面的元素往前移动，覆盖被删除的元素。当被删除的元素是数组中最后一个时，就不再需要移动数组，所以在移动之前加一个判断。</p><h2 id=迭代器>迭代器</h2><p>迭代器的实现类如下</p><pre><code>private class SimapleIterator implements Iterator&lt;E&gt;{
 		private int currentIndex = 0;
 
 		@Override
@@ -64,40 +63,40 @@ public boolean remove(Object o) {
 			return (E) data[currentIndex++];
 		}
 }
-</code></pre><p>这是一个比较简单又能完成任务的实现。初始索引currentIndex是0，调用<code>hasNext</code>方法时，如果currentIndex小于size，表示还有下一个元素，如果currentIndex等于size，就表示已经没有下一个元素了。<code>next</code>方法在取出currentIndex下的元素之后，再自增移动currentIndex。</p><h2 id=测试>测试</h2><p>目前主要的CRUD方法和迭代器都已经实现，现在可以测试一下这些方法能不能正常使用。测试方法如下</p><pre><code class=language-java>@Test
-public void testSimpleArrayList(){
-    for (int i = 0; i &lt; 100; i++) {
-        list.add(i);
-    }
+</code></pre><p>这是一个比较简单又能完成任务的实现。初始索引currentIndex是0，调用<code>hasNext</code>方法时，如果currentIndex小于size，表示还有下一个元素，如果currentIndex等于size，就表示已经没有下一个元素了。<code>next</code>方法在取出currentIndex下的元素之后，再自增移动currentIndex。</p><h2 id=测试>测试</h2><p>目前主要的CRUD方法和迭代器都已经实现，现在可以测试一下这些方法能不能正常使用。测试方法如下</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@Test</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>testSimpleArrayList</span><span style=color:#f92672>(){</span>
+    <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> 100<span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+        list<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>i<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
 
-    list.add(null);
+    list<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>);</span>
 
-    System.out.println(&quot;size=&quot; + list.size());
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;size=&#34;</span> <span style=color:#f92672>+</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>());</span>
 
-    System.out.println(list.remove(Integer.valueOf(0)));
-    System.out.println(list.remove(null));
-    System.out.println(list.remove(Integer.valueOf(100)));
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>list<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>valueOf</span><span style=color:#f92672>(</span>0<span style=color:#f92672>)));</span>
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>list<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span><span style=color:#66d9ef>null</span><span style=color:#f92672>));</span>
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>list<span style=color:#f92672>.</span><span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>valueOf</span><span style=color:#f92672>(</span>100<span style=color:#f92672>)));</span>
 
-    System.out.println(&quot;size=&quot; + list.size());
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;size=&#34;</span> <span style=color:#f92672>+</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>());</span>
 
-    int count = 0;
-    for (int i = 0; i &lt; list.size(); i++) {
-        count += list.get(i);
-    }
-    System.out.println(&quot;count = &quot; + count);
+    <span style=color:#66d9ef>int</span> count <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>size</span><span style=color:#f92672>();</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+        count <span style=color:#f92672>+=</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>i<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;count = &#34;</span> <span style=color:#f92672>+</span> count<span style=color:#f92672>);</span>
 
-    int count2 = 0;
-    for (Integer i : list) {
-        count2 += i;
-    }
-    System.out.println(&quot;count2 = &quot; + count2);
+    <span style=color:#66d9ef>int</span> count2 <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span>Integer i <span style=color:#f92672>:</span> list<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        count2 <span style=color:#f92672>+=</span> i<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;count2 = &#34;</span> <span style=color:#f92672>+</span> count2<span style=color:#f92672>);</span>
 
-    System.out.println(&quot;get(0)=&quot; + list.get(0));
-    list.set(0, 1000);
-    System.out.println(&quot;get(0)=&quot; + list.get(0));
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;get(0)=&#34;</span> <span style=color:#f92672>+</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>0<span style=color:#f92672>));</span>
+    list<span style=color:#f92672>.</span><span style=color:#a6e22e>set</span><span style=color:#f92672>(</span>0<span style=color:#f92672>,</span> 1000<span style=color:#f92672>);</span>
+    System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;get(0)=&#34;</span> <span style=color:#f92672>+</span> list<span style=color:#f92672>.</span><span style=color:#a6e22e>get</span><span style=color:#f92672>(</span>0<span style=color:#f92672>));</span>
 
-}
-</code></pre><p>输出</p><pre><code>size=101
+<span style=color:#f92672>}</span>
+</code></pre></div><p>输出</p><pre><code>size=101
 true
 true
 false
@@ -106,139 +105,138 @@ count = 4950
 count2 = 4950
 get(0)=1
 get(0)=1000
-</code></pre><p>可以看到输出正常，表示这个简单的实现的基本功能都已经完成了。下面再来看看JDK中是如何实现的。</p><h1 id=jdk8的arraylist实现>jdk8的ArrayList实现</h1><p>现在来看看jdk8的是如何实现ArrayList的，下面源码基于jdk1.8.0_121。</p><h2 id=成员变量和构造方法-1>成员变量和构造方法</h2><p>先来看一下主要的成员变量</p><pre><code class=language-java>    private static final int DEFAULT_CAPACITY = 10;
+</code></pre><p>可以看到输出正常，表示这个简单的实现的基本功能都已经完成了。下面再来看看JDK中是如何实现的。</p><h1 id=jdk8的arraylist实现>jdk8的ArrayList实现</h1><p>现在来看看jdk8的是如何实现ArrayList的，下面源码基于jdk1.8.0_121。</p><h2 id=成员变量和构造方法-1>成员变量和构造方法</h2><p>先来看一下主要的成员变量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> DEFAULT_CAPACITY <span style=color:#f92672>=</span> 10<span style=color:#f92672>;</span>
 
-    private static final Object[] EMPTY_ELEMENTDATA = {};
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> Object<span style=color:#f92672>[]</span> EMPTY_ELEMENTDATA <span style=color:#f92672>=</span> <span style=color:#f92672>{};</span>
 
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> Object<span style=color:#f92672>[]</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA <span style=color:#f92672>=</span> <span style=color:#f92672>{};</span>
 
-    transient Object[] elementData;
+    <span style=color:#66d9ef>transient</span> Object<span style=color:#f92672>[]</span> elementData<span style=color:#f92672>;</span>
 
-    private int size;
-</code></pre><p>这里主要看一下<code>elementData</code>变量，这个变量是实际存储数据的数组，但是又声明为<code>transient</code> ，这表示ArrayList没法序列化吗？其实并不是，因为ArrayList实现了自己的<code>readObject</code>和<code>writeObject</code>方法来用于序列化。</p><p>下面再来看一下构造方法</p><pre><code class=language-java>public ArrayList(int initialCapacity) {
-    if (initialCapacity &gt; 0) {
-        this.elementData = new Object[initialCapacity];
-    } else if (initialCapacity == 0) {
-        this.elementData = EMPTY_ELEMENTDATA;
-    } else {
-        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+
-                                           initialCapacity);
-    }
-}
+    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>int</span> size<span style=color:#f92672>;</span>
+</code></pre></div><p>这里主要看一下<code>elementData</code>变量，这个变量是实际存储数据的数组，但是又声明为<code>transient</code> ，这表示ArrayList没法序列化吗？其实并不是，因为ArrayList实现了自己的<code>readObject</code>和<code>writeObject</code>方法来用于序列化。</p><p>下面再来看一下构造方法</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#a6e22e>ArrayList</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> initialCapacity<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>initialCapacity <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>elementData</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Object<span style=color:#f92672>[</span>initialCapacity<span style=color:#f92672>];</span>
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>initialCapacity <span style=color:#f92672>==</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>elementData</span> <span style=color:#f92672>=</span> EMPTY_ELEMENTDATA<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalArgumentException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Illegal Capacity: &#34;</span><span style=color:#f92672>+</span>
+                                           initialCapacity<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
 
-public ArrayList() {
-    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
-}
+<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>ArrayList</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>elementData</span> <span style=color:#f92672>=</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
 
-public ArrayList(Collection&lt;? extends E&gt; c) {
-    elementData = c.toArray();
-    if ((size = elementData.length) != 0) {
-        if (elementData.getClass() != Object[].class)
-            elementData = Arrays.copyOf(elementData, size, Object[].class);
-    } else {
-        this.elementData = EMPTY_ELEMENTDATA;
-    }
-}
-</code></pre><p><code>public ArrayList(int initialCapacity)</code>：这个构造方法主要用于初始化数组的大小，当创建时就能知道有多少元素时，用这个构造方法能让时间和空间都达到最好的效果。比如，如果在创建时就知道会有1000个元素，用这个构造方法能避免在调用<code>add</code>方法时频繁地复制数组。</p><p><code>public ArrayList()</code>：这是默认构造方法，初始化时会构造一个默认的空数组<code>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</code>，被所有ArrayList共用。</p><p><code>public ArrayList(Collection&lt;? extends E&gt; c)</code>：这个构造方法接收一个集合作为基础元素返回一个新的ArrayList。</p><h2 id=crud实现>CRUD实现</h2><p>首先看一下<code>add</code>方法，主要看一下ArrayList是如何扩容的，扩容的主要方法是<code>private void grow(int minCapacity)</code></p><pre><code class=language-java>public boolean add(E e) {
-    ensureCapacityInternal(size + 1); 
-    elementData[size++] = e;
-    return true;
-}
-private void ensureCapacityInternal(int minCapacity) {
-    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
-        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
-    }
+<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>ArrayList</span><span style=color:#f92672>(</span>Collection<span style=color:#f92672>&lt;?</span> <span style=color:#66d9ef>extends</span> E<span style=color:#f92672>&gt;</span> c<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    elementData <span style=color:#f92672>=</span> c<span style=color:#f92672>.</span><span style=color:#a6e22e>toArray</span><span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>((</span>size <span style=color:#f92672>=</span> elementData<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>)</span> <span style=color:#f92672>!=</span> 0<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>elementData<span style=color:#f92672>.</span><span style=color:#a6e22e>getClass</span><span style=color:#f92672>()</span> <span style=color:#f92672>!=</span> Object<span style=color:#f92672>[].</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span>
+            elementData <span style=color:#f92672>=</span> Arrays<span style=color:#f92672>.</span><span style=color:#a6e22e>copyOf</span><span style=color:#f92672>(</span>elementData<span style=color:#f92672>,</span> size<span style=color:#f92672>,</span> Object<span style=color:#f92672>[].</span><span style=color:#a6e22e>class</span><span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>elementData</span> <span style=color:#f92672>=</span> EMPTY_ELEMENTDATA<span style=color:#f92672>;</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><code>public ArrayList(int initialCapacity)</code>：这个构造方法主要用于初始化数组的大小，当创建时就能知道有多少元素时，用这个构造方法能让时间和空间都达到最好的效果。比如，如果在创建时就知道会有1000个元素，用这个构造方法能避免在调用<code>add</code>方法时频繁地复制数组。</p><p><code>public ArrayList()</code>：这是默认构造方法，初始化时会构造一个默认的空数组<code>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</code>，被所有ArrayList共用。</p><p><code>public ArrayList(Collection&lt;? extends E> c)</code>：这个构造方法接收一个集合作为基础元素返回一个新的ArrayList。</p><h2 id=crud实现>CRUD实现</h2><p>首先看一下<code>add</code>方法，主要看一下ArrayList是如何扩容的，扩容的主要方法是<code>private void grow(int minCapacity)</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>E e<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    ensureCapacityInternal<span style=color:#f92672>(</span>size <span style=color:#f92672>+</span> 1<span style=color:#f92672>);</span> 
+    elementData<span style=color:#f92672>[</span>size<span style=color:#f92672>++]</span> <span style=color:#f92672>=</span> e<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>ensureCapacityInternal</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> minCapacity<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>elementData <span style=color:#f92672>==</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        minCapacity <span style=color:#f92672>=</span> Math<span style=color:#f92672>.</span><span style=color:#a6e22e>max</span><span style=color:#f92672>(</span>DEFAULT_CAPACITY<span style=color:#f92672>,</span> minCapacity<span style=color:#f92672>);</span>
+    <span style=color:#f92672>}</span>
     
-    ensureExplicitCapacity(minCapacity);
-}
-private void ensureExplicitCapacity(int minCapacity) {
-    modCount++;//数组修改标记
+    ensureExplicitCapacity<span style=color:#f92672>(</span>minCapacity<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>ensureExplicitCapacity</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> minCapacity<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    modCount<span style=color:#f92672>++;</span><span style=color:#75715e>//数组修改标记
+</span><span style=color:#75715e></span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>minCapacity <span style=color:#f92672>-</span> elementData<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span> <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span>
+        grow<span style=color:#f92672>(</span>minCapacity<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
 
-    if (minCapacity - elementData.length &gt; 0)
-        grow(minCapacity);
-}
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> MAX_ARRAY_SIZE <span style=color:#f92672>=</span> Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>MAX_VALUE</span> <span style=color:#f92672>-</span> 8<span style=color:#f92672>;</span>
 
-private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-
-private void grow(int minCapacity) {
-    int oldCapacity = elementData.length;
-    //计算扩容长度
-    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
-    //如果新计算出的数组长度，小于需求的数组长度，就丢弃计算出的结果，把需求的数组长度赋值给newCapacity
-    if (newCapacity - minCapacity &lt; 0)
-        newCapacity = minCapacity;
-    //考虑新计算出的数组长度过大的情况
-    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
-        newCapacity = hugeCapacity(minCapacity);
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>grow</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> minCapacity<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>int</span> oldCapacity <span style=color:#f92672>=</span> elementData<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>;</span>
+    <span style=color:#75715e>//计算扩容长度
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>int</span> newCapacity <span style=color:#f92672>=</span> oldCapacity <span style=color:#f92672>+</span> <span style=color:#f92672>(</span>oldCapacity <span style=color:#f92672>&gt;&gt;</span> 1<span style=color:#f92672>);</span>
+    <span style=color:#75715e>//如果新计算出的数组长度，小于需求的数组长度，就丢弃计算出的结果，把需求的数组长度赋值给newCapacity
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>newCapacity <span style=color:#f92672>-</span> minCapacity <span style=color:#f92672>&lt;</span> 0<span style=color:#f92672>)</span>
+        newCapacity <span style=color:#f92672>=</span> minCapacity<span style=color:#f92672>;</span>
+    <span style=color:#75715e>//考虑新计算出的数组长度过大的情况
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>newCapacity <span style=color:#f92672>-</span> MAX_ARRAY_SIZE <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span>
+        newCapacity <span style=color:#f92672>=</span> hugeCapacity<span style=color:#f92672>(</span>minCapacity<span style=color:#f92672>);</span>
     
-    elementData = Arrays.copyOf(elementData, newCapacity);
-}
-private static int hugeCapacity(int minCapacity) {
-    //这里主要考虑int值溢出的情况，当需求的数组长度超过int的最大值时，就会发生溢出，此时主动抛出异常
-    if (minCapacity &lt; 0) 
-        throw new OutOfMemoryError();
-    return (minCapacity &gt; MAX_ARRAY_SIZE) ?
-        Integer.MAX_VALUE :
-    MAX_ARRAY_SIZE;
-}
-</code></pre><p>在<code>add</code>方法实现的流程上SimpleArrayList与ArrayList差别不是很大，都是先判断数组大小，再把新元素赋值，不过ArrayList考虑得更多：</p><ul><li><p>第一个是多考虑了数组结构修改的情况，<code>modCount++</code>在这里表示数组结构发生了变化。对于在使用迭代器之类的情况时，如果数组结构发生变化，会导致结果不正确，所以通过这个值来监控数组结构的变化，并在发生变化的时候抛出<code>ConcurrentModificationException</code>。</p></li><li><p>第二个是更仔细地考虑了扩容的长度，包括数组长度过长，就主动抛出异常等，详细可以查看上面的<code>private void grow(int minCapacity)</code>和<code>private static int hugeCapacity(int minCapacity)</code>方法上的注释。</p></li></ul><p>ArrayList扩容长度的计算方法是<code>int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);</code>，表示新的长度是在旧的长度基础之上，增加旧长度的50%（<code>oldCapacity &gt;&gt; 1</code>在oldCapacity为正整数的情况下，等于<code>oldCapacity / 2</code>）。</p><p>那么为什么JDK设计扩容长度是在原基础上增加50%呢？其实这是基于普遍性能上的考虑，在原基础上增加50%的长度，在一定程度上能保证<code>add</code>方法执行为常数时间（在扩容期间会有一定的性能损失）。</p><blockquote><p>在早期的Java版本中，扩容长度的计算方式是<code>int newCapacity = (oldCapacity * 3)/2 + 1;</code></p></blockquote><p>现在再来看一下<code>get</code>方法的实现</p><pre><code class=language-java>public E get(int index) {
-    rangeCheck(index);
+    elementData <span style=color:#f92672>=</span> Arrays<span style=color:#f92672>.</span><span style=color:#a6e22e>copyOf</span><span style=color:#f92672>(</span>elementData<span style=color:#f92672>,</span> newCapacity<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>hugeCapacity</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> minCapacity<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#75715e>//这里主要考虑int值溢出的情况，当需求的数组长度超过int的最大值时，就会发生溢出，此时主动抛出异常
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>minCapacity <span style=color:#f92672>&lt;</span> 0<span style=color:#f92672>)</span> 
+        <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> OutOfMemoryError<span style=color:#f92672>();</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#f92672>(</span>minCapacity <span style=color:#f92672>&gt;</span> MAX_ARRAY_SIZE<span style=color:#f92672>)</span> <span style=color:#f92672>?</span>
+        Integer<span style=color:#f92672>.</span><span style=color:#a6e22e>MAX_VALUE</span> <span style=color:#f92672>:</span>
+    MAX_ARRAY_SIZE<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>在<code>add</code>方法实现的流程上SimpleArrayList与ArrayList差别不是很大，都是先判断数组大小，再把新元素赋值，不过ArrayList考虑得更多：</p><ul><li><p>第一个是多考虑了数组结构修改的情况，<code>modCount++</code>在这里表示数组结构发生了变化。对于在使用迭代器之类的情况时，如果数组结构发生变化，会导致结果不正确，所以通过这个值来监控数组结构的变化，并在发生变化的时候抛出<code>ConcurrentModificationException</code>。</p></li><li><p>第二个是更仔细地考虑了扩容的长度，包括数组长度过长，就主动抛出异常等，详细可以查看上面的<code>private void grow(int minCapacity)</code>和<code>private static int hugeCapacity(int minCapacity)</code>方法上的注释。</p></li></ul><p>ArrayList扩容长度的计算方法是<code>int newCapacity = oldCapacity + (oldCapacity >> 1);</code>，表示新的长度是在旧的长度基础之上，增加旧长度的50%（<code>oldCapacity >> 1</code>在oldCapacity为正整数的情况下，等于<code>oldCapacity / 2</code>）。</p><p>那么为什么JDK设计扩容长度是在原基础上增加50%呢？其实这是基于普遍性能上的考虑，在原基础上增加50%的长度，在一定程度上能保证<code>add</code>方法执行为常数时间（在扩容期间会有一定的性能损失）。</p><blockquote><p>在早期的Java版本中，扩容长度的计算方式是<code>int newCapacity = (oldCapacity * 3)/2 + 1;</code></p></blockquote><p>现在再来看一下<code>get</code>方法的实现</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> E <span style=color:#a6e22e>get</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    rangeCheck<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
 
-    return elementData(index);
-}
-private void rangeCheck(int index) {
-    if (index &gt;= size)
-        throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-}
-@SuppressWarnings(&quot;unchecked&quot;)
-E elementData(int index) {
-    return (E) elementData[index];
-}
-</code></pre><p>在<code>get</code>方法实现的流程上，SimpleArrayList与ArrayList类似，先检查边界，再从数组中取出元素。</p><p>现在到<code>set</code>方法的实现</p><pre><code class=language-java>public E set(int index, E element) {
-    rangeCheck(index);
+    <span style=color:#66d9ef>return</span> elementData<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
+<span style=color:#f92672>}</span>
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>rangeCheck</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>index <span style=color:#f92672>&gt;=</span> size<span style=color:#f92672>)</span>
+        <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IndexOutOfBoundsException<span style=color:#f92672>(</span>outOfBoundsMsg<span style=color:#f92672>(</span>index<span style=color:#f92672>));</span>
+<span style=color:#f92672>}</span>
+<span style=color:#a6e22e>@SuppressWarnings</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;unchecked&#34;</span><span style=color:#f92672>)</span>
+E <span style=color:#a6e22e>elementData</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#f92672>(</span>E<span style=color:#f92672>)</span> elementData<span style=color:#f92672>[</span>index<span style=color:#f92672>];</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>在<code>get</code>方法实现的流程上，SimpleArrayList与ArrayList类似，先检查边界，再从数组中取出元素。</p><p>现在到<code>set</code>方法的实现</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> E <span style=color:#a6e22e>set</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>,</span> E element<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    rangeCheck<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
 
-    E oldValue = elementData(index);
-    elementData[index] = element;
-    return oldValue;
-}
-</code></pre><p><code>set</code>方法相对也比较简单，SimpleArrayList实现类似。</p><p>再来看看<code>remove</code>方法</p><pre><code class=language-java>public boolean remove(Object o) {
-    if (o == null) {
-        for (int index = 0; index &lt; size; index++)
-            if (elementData[index] == null) {
-                fastRemove(index);
-                return true;
-            }
-    } else {
-        for (int index = 0; index &lt; size; index++)
-            if (o.equals(elementData[index])) {
-                fastRemove(index);
-                return true;
-            }
-    }
-    return false;
-}
-private void fastRemove(int index) {
-    modCount++;
-    int numMoved = size - index - 1;
-    if (numMoved &gt; 0)
-        System.arraycopy(elementData, index+1, elementData, index,
-                         numMoved);
-    elementData[--size] = null; // clear to let GC do its work
-}
-</code></pre><p>在<code>remove</code>方法上，ArrayList先判断了<code>null</code>，然后再进行循环判断，最后再进行移动覆盖删除。同时也考虑到了数组结构修改的情况，修改<code>modCount</code>变量来标记。</p><p>ArrayList中迭代器的<code>hasNext</code>和<code>next</code>使用<code>modCount</code>来判断数组结构是否发生修改，SimpleArrayList只是简单的实现数据的获取。</p><h1 id=总结>总结</h1><p>本文通过对比来加深对ArrayList常用方法的理解。</p><p>最后基于本文，总结了以下几个点：</p><ul><li>ArrayList内部使用Object数组来存储元素</li><li>当数组需要扩容时，每次增加原来长度的50%</li><li>当元素被删除时，删除元素后面的数组会往前移动（当被删除的元素在最后一个时除外），所以在很多情况下，想通过每次删除单个元素来提高遍历ArrayList的性能是不靠谱的（见过一些人尝试这样做），通常更可能损失性能</li><li>当使用<code>public boolean remove(Object o)</code>方法删除元素时，只会删除第一个找到的对应元素</li></ul></div><footer><ul class=stats><li class=categories><ul><i class="fa fa-folder"></i><li><a class=article-category-link href=https://g.nereusyi.com/categories/java>java</a></li></ul></li><li class=tags><ul><i class="fa fa-tags"></i><li><a class=article-category-link href=https://g.nereusyi.com/tags/java>java</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/java%E5%9F%BA%E7%A1%80>java基础</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84>数据结构</a></li></ul></li></ul></footer></article><article class=post><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"nereusyi"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article><ul class="actions pagination"><li><a href=https://g.nereusyi.com/post/2019/how-spring-boot-2-started-up/ class="button big previous">Spring Boot 2 启动流程解析</a></li><li><a href=https://g.nereusyi.com/post/2019/implements-a-simple-linkedlist/ class="button big next">动手实现:用Java实现一个简单的LinkedList</a></li></ul></div><section id=sidebar><section id=intro><a href=https://g.nereusyi.com/ class=logo><img src=https://g.nereusyi.com/img/web/logo.jpg alt=Nereus></a><header><h2>Nereus</h2><p>一名Java开发</p></header><ul class=icons><li><a href=//github.com/ivyboy target=_blank title=GitHub class="fa fa-github"></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><div class=posts-container><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/11/spring-security-basic-usage/>Spring Security整合进Spring Boot中的基础用法</a></h3><time class=published datetime=2020-11-30>November 30, 2020</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2020/10/use-jmh-java-benchmark/>使用JMH对Java应用进行微基准测试</a></h3><time class=published datetime=2020-10-25>October 25, 2020</time></header></article></div><a href=/post/ class=button>View more posts</a></div></section><section id=categories><header><h3><a href=https://g.nereusyi.com/categories/>Categories</a></h3></header><p><article><header><a href=https://g.nereusyi.com/categories/java/>java</a>
-<span style=float:right>6</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/docker/>docker</a>
+    E oldValue <span style=color:#f92672>=</span> elementData<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
+    elementData<span style=color:#f92672>[</span>index<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> element<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>return</span> oldValue<span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><code>set</code>方法相对也比较简单，SimpleArrayList实现类似。</p><p>再来看看<code>remove</code>方法</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>remove</span><span style=color:#f92672>(</span>Object o<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>o <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> index <span style=color:#f92672>&lt;</span> size<span style=color:#f92672>;</span> index<span style=color:#f92672>++)</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>elementData<span style=color:#f92672>[</span>index<span style=color:#f92672>]</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                fastRemove<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
+                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> index <span style=color:#f92672>&lt;</span> size<span style=color:#f92672>;</span> index<span style=color:#f92672>++)</span>
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>o<span style=color:#f92672>.</span><span style=color:#a6e22e>equals</span><span style=color:#f92672>(</span>elementData<span style=color:#f92672>[</span>index<span style=color:#f92672>]))</span> <span style=color:#f92672>{</span>
+                fastRemove<span style=color:#f92672>(</span>index<span style=color:#f92672>);</span>
+                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+            <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span><span style=color:#f92672>;</span>
+<span style=color:#f92672>}</span>
+<span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fastRemove</span><span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> index<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    modCount<span style=color:#f92672>++;</span>
+    <span style=color:#66d9ef>int</span> numMoved <span style=color:#f92672>=</span> size <span style=color:#f92672>-</span> index <span style=color:#f92672>-</span> 1<span style=color:#f92672>;</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>numMoved <span style=color:#f92672>&gt;</span> 0<span style=color:#f92672>)</span>
+        System<span style=color:#f92672>.</span><span style=color:#a6e22e>arraycopy</span><span style=color:#f92672>(</span>elementData<span style=color:#f92672>,</span> index<span style=color:#f92672>+</span>1<span style=color:#f92672>,</span> elementData<span style=color:#f92672>,</span> index<span style=color:#f92672>,</span>
+                         numMoved<span style=color:#f92672>);</span>
+    elementData<span style=color:#f92672>[--</span>size<span style=color:#f92672>]</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span> <span style=color:#75715e>// clear to let GC do its work
+</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+</code></pre></div><p>在<code>remove</code>方法上，ArrayList先判断了<code>null</code>，然后再进行循环判断，最后再进行移动覆盖删除。同时也考虑到了数组结构修改的情况，修改<code>modCount</code>变量来标记。</p><p>ArrayList中迭代器的<code>hasNext</code>和<code>next</code>使用<code>modCount</code>来判断数组结构是否发生修改，SimpleArrayList只是简单的实现数据的获取。</p><h1 id=总结>总结</h1><p>本文通过对比来加深对ArrayList常用方法的理解。</p><p>最后基于本文，总结了以下几个点：</p><ul><li>ArrayList内部使用Object数组来存储元素</li><li>当数组需要扩容时，每次增加原来长度的50%</li><li>当元素被删除时，删除元素后面的数组会往前移动（当被删除的元素在最后一个时除外），所以在很多情况下，想通过每次删除单个元素来提高遍历ArrayList的性能是不靠谱的（见过一些人尝试这样做），通常更可能损失性能</li><li>当使用<code>public boolean remove(Object o)</code>方法删除元素时，只会删除第一个找到的对应元素</li></ul></div><footer><ul class=stats><li class=categories><ul><i class="fa fa-folder"></i><li><a class=article-category-link href=https://g.nereusyi.com/categories/java>java</a></li></ul></li><li class=tags><ul><i class="fa fa-tags"></i><li><a class=article-category-link href=https://g.nereusyi.com/tags/java>java</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/java%E5%9F%BA%E7%A1%80>java基础</a></li><li><a class=article-category-link href=https://g.nereusyi.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84>数据结构</a></li></ul></li></ul></footer></article><article class=post><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//nereusyi.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article><ul class="actions pagination"><li><a href=https://g.nereusyi.com/post/2019/how-spring-boot-2-started-up/ class="button big previous">Spring Boot 2 启动流程解析</a></li><li><a href=https://g.nereusyi.com/post/2019/implements-a-simple-linkedlist/ class="button big next">动手实现:用Java实现一个简单的LinkedList</a></li></ul></div><section id=sidebar><section id=intro><a href=https://g.nereusyi.com/ class=logo><img src=https://g.nereusyi.com/img/web/logo.jpg alt=Nereus></a><header><h2>Nereus</h2><p>一名Java开发</p></header><ul class=icons><li><a href=//github.com/ivyboy target=_blank title=GitHub class="fa fa-github"></a></li></ul></section><section class=recent-posts><div class=mini-posts><header><h3>Recent Posts</h3></header><div class=posts-container><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/>Post</a></h3><time class=published datetime=2021-03-20>March 20, 2021</time></header></article><article class=mini-post><header><h3><a href=https://g.nereusyi.com/post/2021/03/spring-boot-actuator-demo/>Spring Boot Actuator 2 示例</a></h3><time class=published datetime=2021-03-20>March 20, 2021</time></header></article></div><a href=/post/ class=button>View more posts</a></div></section><section id=categories><header><h3><a href=https://g.nereusyi.com/categories/>Categories</a></h3></header><p><article><header><a href=https://g.nereusyi.com/categories/java/>java</a>
+<span style=float:right>6</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-boot/>spring-boot</a>
+<span style=float:right>3</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/docker/>docker</a>
 <span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/jvm/>jvm</a>
-<span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-boot/>spring boot</a>
 <span style=float:right>2</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/devops/>devops</a>
 <span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/example/>example</a>
 <span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/life/>life</a>
 <span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/performance/>performance</a>
-<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-security/>spring security</a>
+<span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/spring-security/>spring-security</a>
 <span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/tool/>tool</a>
 <span style=float:right>1</span></header></article></p><p><article><header><a href=https://g.nereusyi.com/categories/%E5%B0%8F%E6%8A%80%E5%B7%A7/>小技巧</a>
 <span style=float:right>1</span></header></article></p></section><section id=footer><p class=copyright>&copy; 2020
 NereusYi
 .
 Powered by <a href=//gohugo.io target=_blank>Hugo</a>
-<a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/><img alt="Creative Commons License" style=border-width:0 src=https://i.creativecommons.org/l/by-nc/4.0/88x31.png></a><br>This site is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/>Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p></section></section></div><a id=back-to-top href=# class="fa fa-arrow-up fa-border fa-2x"></a><script src=//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js></script><script src=//cdn.bootcss.com/highlight.js/9.11.0/languages/java.min.js></script><script>hljs.configure({languages:[]});hljs.initHighlightingOnLoad();</script><script src=https://code.jquery.com/jquery-3.2.1.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js></script><script src=https://g.nereusyi.com/js/util.js></script><script src=https://g.nereusyi.com/js/main.js></script><script src=https://g.nereusyi.com/js/backToTop.js></script><script>hljs.initHighlightingOnLoad();</script></body></html>
+<a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/><img alt="Creative Commons License" style=border-width:0 src=https://i.creativecommons.org/l/by-nc/4.0/88x31.png></a><br>This site is licensed under a <a rel=license href=http://creativecommons.org/licenses/by-nc/4.0/>Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p></section></section></div><a id=back-to-top href=# class="fa fa-arrow-up fa-border fa-2x"></a><script src=//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js></script><script src=//cdn.bootcss.com/highlight.js/9.11.0/languages/java.min.js></script><script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script src=https://code.jquery.com/jquery-3.2.1.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js></script><script src=https://g.nereusyi.com/js/util.js></script><script src=https://g.nereusyi.com/js/main.js></script><script src=https://g.nereusyi.com/js/backToTop.js></script><script>hljs.initHighlightingOnLoad()</script></body></html>
